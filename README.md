@@ -9,7 +9,7 @@ O FinPlan é uma plataforma online de gestão financeira pessoal desenvolvida pa
 
 ![Tela de Inicial]()
 
----
+----
 # 1° Interação : 
 
 ## User Stories e Requisitos Funcionais

@@ -9,7 +9,7 @@
 | Tela e função de edição de informação do usuário | **RF004_editaruser** | Lucas | Jose |
 | Tela e função para notificação | **RF004_notificação** | Ana | Ruan |
 
----
+----
 
 # 2° Interação - Gestão de Transações e **Dashboard**
 
