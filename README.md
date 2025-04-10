@@ -1,116 +1,204 @@
+
 # Engenharia de Software 2025.1 - Universidade Federal do Tocantins
- Bacharelado em Ciência da Computação, 4º semestre   
- Professor: Edeilson Milhomem da Silva   
- Grupo: José Borges, Lucas Carvalho, Kawan de Sá, Ruan Carlos, Anna Laura, Thales Marques
+**Bacharelado em Ciência da Computação - 4º semestre**  
+**Professor:** Edeilson Milhomem da Silva  
+**Grupo:** José Borges, Lucas Carvalho, Kawan de Sá, Ruan Carlos, Anna Laura, Thales Marques
 
-## FinPlan
-### Descrição : 
-O FinPlan é uma plataforma online de gestão financeira pessoal desenvolvida para auxiliar usuários no controle das suas finanças de forma simples e eficiente. O sistema permite o cadastro de receitas e despesas, categorização de transações, visualização de relatórios e gráficos interativos gerados automaticamente baseado nas inserções do usuario.  A ferramenta foi pensada para quem deseja organizar o orçamento mensal, acompanhar investimentos e alcançar metas financeiras com clareza e praticidade.
+---
 
-----
-# 1° Interação : 
+## Projeto: FinPlan
+### Descrição Geral
+
+O **FinPlan** é uma plataforma online de gestão financeira pessoal desenvolvida para auxiliar usuários no controle das suas finanças de forma simples e eficiente. O sistema permite o cadastro de receitas e despesas, categorização de transações, visualização de relatórios e gráficos interativos gerados automaticamente baseado nas inserções do usuário. A ferramenta foi pensada para quem deseja organizar o orçamento mensal, acompanhar investimentos e alcançar metas financeiras com clareza e praticidade.
+
+---
+
+# ✅ 1ª Iteração: Autenticação e Onboarding Seguro
 
 ## User Stories
 
-### 1. Cadastro e Autenticação
-
-#### US001 – Como usuário, quero me cadastrar no sistema com e-mail e senha para acessar minhas finanças.
+### US001 – Cadastro
+**Como** usuário, **quero** me cadastrar no sistema com e-mail e senha **para** acessar minhas finanças.  
 **Critérios de Aceite:**
-- O e-mail deve ser validado com link de ativação.
-- A senha deve ter no mínimo 8 caracteres, incluindo uma letra maiúscula, um número e um caractere especial.
-- O cadastro deve permitir autenticação social (Google, Apple).
+- E-mail validado com link de ativação.
+- Senha com no mínimo 8 caracteres, 1 letra maiúscula, 1 número e 1 caractere especial.
+- Cadastro com autenticação social (Google, Apple).
 
-![Criação de conta](/prototipos/criarconta.jpg)
-![confirmação de conta](/prototipos/confirmacaoconta.jpg)
+📸 ![Criação de conta](/prototipos/criarconta.jpg)  
+📸 ![Confirmação de conta](/prototipos/confirmacaoconta.jpg)
 
-#### US002 – Como usuário, quero fazer login via e-mail/senha ou autenticação social para acessar minha conta.
+---
+
+### US002 – Login
+**Como** usuário, **quero** fazer login via e-mail/senha ou autenticação social **para** acessar minha conta.  
 **Critérios de Aceite:**
-- Deve permitir login via e-mail/senha ou Google/Apple.
-- Exibir mensagem de erro em caso de credenciais inválidas.
+- Login via e-mail/senha ou Google/Apple.
+- Mensagem de erro em caso de credenciais inválidas.
 
-![Login](/prototipos/login.jpg)
+📸 ![Login](/prototipos/login.jpg)
 
-#### US003 – Como usuário, quero poder redefinir minha senha caso a esqueça.
+---
+
+### US003 – Recuperação de Senha
+**Como** usuário, **quero** redefinir minha senha caso a esqueça.  
 **Critérios de Aceite:**
-- O sistema deve enviar um link para redefinição via e-mail.
-- O link deve expirar após 30 minutos.
+- Envio de link para redefinição via e-mail.
+- Link expira em 30 minutos.
 
-![Recuperação de Senha](/prototipos/Recuperação%20de%20senha.jpg)
-![Nova Senha](/prototipos/Nova%20Senha.jpg)
+📸 ![Recuperação de Senha](/prototipos/Recuperação%20de%20senha.jpg)  
+📸 ![Nova Senha](/prototipos/Nova%20Senha.jpg)
 
-#### US004 – Como usuário, quero poder definir meu perfil de investidor.
+---
+
+### US004 – Perfil do Investidor
+**Como** usuário, **quero** definir meu perfil de investidor **para** personalizar as sugestões financeiras.  
 **Critérios de Aceite:**
-- O usuário pode escolher entre vários perfis (conservador, agressivo, etc.).
+- Escolha entre perfis como conservador, moderado, agressivo.
 
-
-![Perfil](/prototipos/perfil.jpg)
-![Notificações](/prototipos/notificacoes.jpg)
-![Notificações](/prototipos/notificacoes2.jpg)
+📸 ![Perfil](/prototipos/perfil.jpg)  
+📸 ![Notificações](/prototipos/notificacoes.jpg)  
+📸 ![Notificações](/prototipos/notificacoes2.jpg)
 
 ---
 
 ## Requisitos Funcionais (RF)
 
-### 1.1. Autenticação e Perfil do Usuário 
+### Autenticação e Perfil do Usuário
 
-- **RF001** – O sistema deve permitir cadastro de usuários via e-mail/senha ou autenticação social (Google, Apple).
-- **RF002** – O sistema deve enviar e-mail de confirmação para ativação de conta.
-- **RF003** – O sistema deve permitir recuperação de senha via e-mail.
-- **RF004** – O usuário deve poder editar seu perfil (nome, foto, preferências, notificação). 
+- **RF001:** Cadastro com e-mail/senha ou autenticação social.
+- **RF002:** Confirmação de e-mail para ativação.
+- **RF003:** Recuperação de senha via e-mail.
+- **RF004:** Edição de perfil com nome, foto e preferências.
 
----------------------------------------------------------------------------------------------
+---
 
-# 2° Interação :
+## ✅ Valor Entregue - 1ª Iteração
 
-## 2. Dashboard Financeiro
+### Resumo:
+Entrega de base sólida para o sistema:  
+✅ Cadastro e login seguro  
+✅ Recuperação de senha  
+✅ Personalização inicial do perfil
 
-#### US005 – Como usuário, quero ver um resumo gráfico das minhas finanças para entender meu saldo mensal.
-**Critérios de Aceite:**
-- Exibir saldo atual baseado em receitas e despesas.
-- Apresentar gráficos (pizza, barras) com comparativo mensal/anual.
-- Permitir filtros por período (dia, mês, ano).
+---
 
-![Dashboard](/prototipos/dashboard.jpg)
+### Detalhamento de Valor
 
-#### US006 – Como usuário, quero visualizar minhas metas financeiras no dashboard para acompanhar meu progresso.
-**Critérios de Aceite:**
-- Exibir metas criadas pelo usuário.
-- Mostrar progresso percentual de cada meta.
+| User Story | Valor para o Usuário | Valor para o Negócio |
+|-----------|----------------------|-----------------------|
+| US001     | Cadastro seguro      | Base de usuários qualificados |
+| US002     | Login flexível       | Menos atrito no acesso |
+| US003     | Recuperação autônoma | Redução de suporte técnico |
+| US004     | Perfil personalizado | Dados para recomendações futuras |
 
-#### US007 – Como usuário, quero visualizar sugestões de investimento de acordo com o meu perfil de investidor.
-**Critérios de Aceite:**
-- Exibir investimentos adequados ao perfil do usuário.
-- Permitir filtros por tipo de rendimento (CDB/LCI/LCA/Ações/Opções, etc.).
+---
+
+### Protótipos Validados
+
+- Fluxo completo: Cadastro → Confirmação → Login → Recuperação → Perfil
+- Feedback visual: Mensagens de erro e confirmação
 
 
 ---
 
-## 3. Gestão de Transações
+## 🚀 Impacto
 
-#### US008 – Como usuário, quero adicionar uma despesa/receita com categoria, data e valor para registrar meus gastos.
-**Critérios de Aceite:**
-- Permitir cadastro com os campos: valor, data, categoria, descrição e anexo (comprovante opcional).
-- Validar que o valor deve ser maior que zero.
-
-#### US009 – Como usuário, quero editar ou excluir uma transação cadastrada incorretamente.
-**Critérios de Aceite:**
-- O sistema deve permitir edição de qualquer campo da transação.
-- Deve haver confirmação antes da exclusão.
+**Para o usuário:** Segurança e personalização desde o primeiro acesso  
+**Para o negócio:** Redução de churn e base para segmentações futuras  
+**Para a equipe:** Infraestrutura sólida para novas funcionalidades
 
 ---
 
-## 1.2. Gestão de Transações 
 
-- **RF005** – O usuário deve poder cadastrar e visualizar transações (receitas e despesas) com:
-  - Valor, data, categoria, descrição e anexo (comprovante). 
-- **RF006** – O sistema deve permitir edição e exclusão de transações. 
+# ✅ 2ª Iteração: Dashboard e Gestão de Transações
+
+## User Stories
+
+### US005 – Dashboard Financeiro
+**Como** usuário, **quero** ver um resumo gráfico das minhas finanças **para** entender meu saldo mensal.  
+**Critérios de Aceite:**
+- Saldo atual com base em receitas e despesas
+- Gráficos em pizza e barra
+- Filtros por dia/mês/ano
+
+📸 ![Dashboard](/prototipos/dashboard.jpg)
 
 ---
 
-## 1.3. Dashboard e Visualização Financeira 
+### US006 – Metas Financeiras
+**Como** usuário, **quero** visualizar minhas metas no dashboard **para** acompanhar meu progresso.  
+**Critérios de Aceite:**
+- Exibição de metas
+- Progresso em percentual
 
-- **RF007** – O sistema deve exibir um dashboard com:
-  - Saldo atual (receitas - despesas).
-  - Gráficos de receitas vs. despesas (mensal/anual).
-  - Metas financeiras e progresso (curto/médio/longo prazo).
-- **RF008** – O usuário deve poder filtrar dados por período (dia, mês, ano).
+---
+
+### US007 – Sugestões de Investimento
+**Como** usuário, **quero** sugestões baseadas no meu perfil **para** investir melhor.  
+**Critérios de Aceite:**
+- Sugestões alinhadas ao perfil
+- Filtros por tipo de investimento
+
+---
+
+### US008 – Adicionar Transação
+**Como** usuário, **quero** registrar despesas e receitas com categoria e valor.  
+**Critérios de Aceite:**
+- Campos obrigatórios: valor, data, categoria, descrição
+- Valor maior que zero
+
+---
+
+### US009 – Editar/Excluir Transação
+**Como** usuário, **quero** corrigir ou remover transações.  
+**Critérios de Aceite:**
+- Edição de qualquer campo
+- Confirmação antes da exclusão
+
+---
+
+## Requisitos Funcionais (RF)
+
+### Gestão de Transações
+
+- **RF005:** Cadastro de transações com valor, data, categoria, descrição e comprovante
+- **RF006:** Edição e exclusão de transações
+
+### Dashboard e Visualização
+
+- **RF007:** Exibição de saldo, gráficos e metas
+- **RF008:** Filtros por período
+
+---
+
+## ✅ Valor Entregue - 2ª Iteração
+
+### Resumo:
+Entrega de funcionalidades visuais e operacionais essenciais:  
+✅ Dashboard gráfico e filtros  
+✅ Gestão de receitas e despesas  
+✅ Projeções de metas e investimentos
+
+---
+
+### Detalhamento de Valor
+
+| User Story | Valor para o Usuário | Valor para o Negócio |
+|-----------|----------------------|-----------------------|
+| US005     | Visualização clara do saldo | Engajamento com uso contínuo |
+| US006     | Acompanhamento de metas     | Retenção por metas alcançadas |
+| US007     | Dicas personalizadas        | Upselling ou parcerias futuras |
+| US008     | Registro completo de finanças | Dados detalhados para análises |
+| US009     | Correção de erros            | Confiabilidade no sistema |
+
+
+---
+
+## 📊 Protótipos Validados
+
+- Dashboard funcional
+- Registro de transações com anexo
+- Filtros temporais aplicados
+
+---
+
