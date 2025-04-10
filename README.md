@@ -108,7 +108,9 @@ Entrega de base sólida para o sistema:
 **Para a equipe:** Infraestrutura sólida para novas funcionalidades
 
 ---
+[Relatório do Projeto com a 1° Interação](Relatorio.md)
 
+---
 
 # ✅ 2ª Iteração: Dashboard e Gestão de Transações
 
@@ -202,3 +204,6 @@ Entrega de funcionalidades visuais e operacionais essenciais:
 
 ---
 
+[Relatório do Projeto com a 2° Interação](Relatorio.md)
+
+---
