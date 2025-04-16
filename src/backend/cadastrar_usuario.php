@@ -38,8 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $confirmacao = $_POST['confirm_senha'] ?? '';
         
     cadastrarUsuario($nome, $email, $senha, $confirmacao);
-    //$id = cadastrarUsuario($nome, $email, $senha, $confirmacao);
-    //echo "Usuário cadastrado com sucesso! ID: $id";
+
   } catch (Exception $e) {
     echo "Erro: " . $e->getMessage();
   }
