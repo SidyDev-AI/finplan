@@ -6,19 +6,15 @@ session_start();
 $db_path = 'database.sqlite'; 
 
 
-try {
-    $db = new PDO('sqlite:' . $db_path);
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Erro ao conectar ao banco de dados: " . $e->getMessage());
-}
+$pdo = require_once('../../Database/conn.php');
+
 
 
 $email = $_POST['email'] ?? '';
 $senha = $_POST['senha'] ?? '';
 
 
-$stmt = $db->prepare("SELECT id, nome, senha FROM usuarios WHERE email = :email");
+$stmt = $pdo->prepare("SELECT id, nome, senha FROM usuarios WHERE email = :email");
 $stmt->bindValue(':email', $email, PDO::PARAM_STR);
 $stmt->execute();
 
@@ -32,8 +28,9 @@ if ($usuario = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $_SESSION['logado'] = true;
 
         
-        header('Location: ../pages/home.php');
+        header("Location: /src/pages/perfil.php");
         exit();
+        
     } else {
        
         header('Location: ../../index.php?erro=senha_incorreta');
