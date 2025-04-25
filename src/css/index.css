@@ -1,0 +1,204 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+
+body {
+  background-color: #041518;
+
+  & #container {
+    position: relative; /* Adicionado para ser referÃªncia para o posicionamento absoluto */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+
+    & .theme {
+      position: absolute; /* Posicionamento absoluto */
+      top: 30px; /* Margem do topo */
+      right: 40px; /* Margem da direita */
+      width: 112px;
+      height: 50px;
+      border: 1px solid #B0B0B0;
+      border-radius: 25px;
+      display: flex;
+      align-items: center;
+      gap: 17px;
+      
+      & .sun {
+        width: 46px;
+        height: 46px;
+        background-color: #041518;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        & i {
+          color: #279E8E;
+          font-size: 30px;
+        }
+      }
+
+      & .moon {
+        width: 46px;
+        height: 46px;
+        background-color: #FFFFFF;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        & i {
+          color: #279E8E;
+          font-size: 30px;
+        }
+      }
+    }
+
+    & #content {
+      background-color: #163546;
+      width: 600px;
+      height: 700px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-radius: 25px;
+
+      & .logo {
+        width: 115px;
+        height: 115px;
+        margin-bottom: 25px;
+      }
+
+      & h1 {
+        font-size: 24px;
+        font-weight: 900;
+        color: #279E8E;
+        width: 420px;
+        align-items: start;
+        margin-bottom: 25px;
+      }
+
+      & form {
+        display: flex;
+        flex-direction: column;
+        row-gap: 20px;
+
+        & div {
+          width: 420px;
+          height: 48px;
+          border: 1px solid #B0B0B0;
+          border-radius: 10px;
+          display: flex;
+          align-items: center;
+
+          & i {
+            color: #B0B0B0;
+            font-size: 24px;
+            margin-left: 15px;
+          }
+
+          & input {
+            background-color: transparent;
+            border: none;
+            color: #B0B0B0;
+            font-size: 16px;
+            font-weight: 200;
+            margin-left: 10px;
+            width: 350px;
+          } & :focus-visible {
+            outline: none;
+          }
+        }
+
+        & .conectado {
+          display: flex;
+          border: none;
+          width: 420px;
+          height: 48px;
+          align-items: center;
+          text-align: center;
+
+          & input {
+            width: 20px;
+            height: 20px;
+            border-radius: 8px;
+            margin: -10px 10px 10px 0;
+          }
+
+          & p {
+            height: 28px;
+          }
+        }
+
+        & .form-btn {
+          width: 420px;
+          height: 48px;
+          border-radius: 10px;
+          text-align: center;
+          font-size: 24px;
+          font-weight: 700;
+          background-color: #279E8E;
+          color: #FFFFFF;
+          border: none;
+          cursor: pointer;
+          transition: .8s ease-in;
+          margin-bottom: 10px;
+        }
+
+        & .form-btn:hover {
+          background-color: #147c6e;
+          transition: .8s ease-out;
+        }
+      }
+
+      & p {
+        color: #B0B0B0;
+        font-size: 14px;
+        font-weight: 200;
+        margin-bottom: 8px;
+
+        & a {
+          text-decoration: none;
+          color: #147c6e;
+          font-weight: 500;
+          font-size: 16px;
+        }
+
+        & .esqueci {
+          color: #B0B0B0;
+          font-size: 14px;
+          font-weight: 200;
+          margin-bottom: 8px;
+        }
+      }
+
+      & a {
+        text-decoration: none;
+        font-size: 18px;
+        color: #147c6e;
+        font-weight: 500;
+        margin-bottom: 15px;
+        margin-top: 10px;
+      }
+
+      & .social-media {
+        display: flex;
+        margin-top: 15px;
+        gap: 15px;
+        & a {
+          & img {
+            width: 50px;
+            height: 50px;
+          }
+        }
+      }
+    }
+  }
+}
