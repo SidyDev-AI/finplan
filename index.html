@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FinPlan Dashboard</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="dark-mode">
+  <div class="container">
+    
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="img/logo.png" alt="Logo">
+        <h2 class="title"><span class="fin">Fin</span><span class="plan">Plan</span></h2>
+      </div>
+
+      <nav class="menu">
+        <ul>
+          <li><i class="icon">📊</i> Dashboard</li>
+          <li><i class="icon">💼</i> Budget</li>
+          <li><i class="icon">📂</i> Categories</li>
+          <li><i class="icon">🔄</i> Transactions</li>
+          <li><i class="icon">📈</i> Analytics</li>
+          <li><i class="icon">🏦</i> Accounts</li>
+          <li><i class="icon">⚙️</i> Settings</li>
+          <li><i class="icon">❓</i> Help</li>
+          <li><i class="icon">🚪</i> Log out</li>
+        </ul>
+      </nav>
+      <div class="theme-toggle">
+        <button id="toggle-theme">
+          <span class="sun">☀️</span>
+          <span class="moon">🌙</span>
+        </button>
+      </div>
+    </aside>
+
+    <div class="main-content">
+      <header class="header">
+        <div class="top-bar">
+          <div>Today: 31-03-25 20:00</div>
+          <div>General balance: R$ 15.543,00 (<span class="positive">+ R$ 124,32</span>)</div>
+          <div class="profile">🔔 <span>User profile</span></div>
+        </div>
+      </header>
+
+      <section class="dashboard">
+        <div class="user-info">
+          <div class="user-avatar"></div>
+          <div class="user-name">User name</div>
+        </div>
+
+        <div class="notifications-section">
+          <h2>Notificações</h2>
+          <div class="notifications-container">
+            
+            <div class="users-list">
+              <div class="user-item" onclick="showMessage(0)">
+                <div class="circle"></div>
+                <span>User name 1</span>
+              </div>
+              <div class="user-item" onclick="showMessage(1)">
+                <div class="circle"></div>
+                <span>User name 2</span>
+              </div>
+              <div class="user-item" onclick="showMessage(2)">
+                <div class="circle"></div>
+                <span>User name 3</span>
+              </div>
+              <div class="user-item" onclick="showMessage(3)">
+                <div class="circle"></div>
+                <span>User name 4</span>
+              </div>
+              <div class="user-item" onclick="showMessage(4)">
+                <div class="circle"></div>
+                <span>User name 5</span>
+              </div>
+            </div>
+
+            <div class="messages-list" id="messages">
+              <div class="message-box active">
+                <p>Olá! Essa é a primeira mensagem do User 1.</p>
+                <span class="date">31/03/25</span>
+              </div>
+              <div class="message-box">
+                <p>Olá! Aqui é a segunda mensagem do User 2.</p>
+                <span class="date">31/03/25</span>
+              </div>
+              <div class="message-box">
+                <p>Mensagem especial do User 3 para você!</p>
+                <span class="date">31/03/25</span>
+              </div>
+              <div class="message-box">
+                <p>Atualizações importantes enviadas pelo User 4.</p>
+                <span class="date">31/03/25</span>
+              </div>
+              <div class="message-box">
+                <p>Notificação rápida do User 5, fique atento.</p>
+                <span class="date">31/03/25</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
