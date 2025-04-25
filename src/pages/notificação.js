@@ -12,4 +12,5 @@ function showMessage(index) {
   messages.forEach((msg, i) => {
     msg.classList.toggle('active', i === index);
   });
+  
 }
