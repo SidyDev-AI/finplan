@@ -41,7 +41,24 @@
         <div class="top-bar">
           <div>Today: 31-03-25 20:00</div>
           <div>General balance: R$ 15.543,00 (<span class="positive">+ R$ 124,32</span>)</div>
-          <div class="profile">🔔 <span>User profile</span></div>
+          <div class="notification-bell" onclick="toggleNotifications()">
+            🔔
+            <div id="notification-popup" class="notification-popup hidden">
+              <h3>Notificações</h3>
+              <div class="notification">
+                <p>Lidar com dinheiro não é uma tarefa fácil...</p>
+                <span class="close-btn" onclick="removeNotification(this)">✖</span>
+              </div>
+              <div class="notification">
+                <p>Lidar com dinheiro não é uma tarefa fácil...</p>
+                <span class="close-btn" onclick="removeNotification(this)">✖</span>
+              </div>
+              <div class="notification">
+                <p>Lidar com dinheiro não é uma tarefa fácil...</p>
+                <span class="close-btn" onclick="removeNotification(this)">✖</span>
+              </div>
+              <button class="show-all-btn">Mostrar todas →</button>
+            </div>
         </div>
       </header>
 
