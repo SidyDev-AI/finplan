@@ -29,7 +29,7 @@ if (!$email) {
 // Reenviar código
 if (isset($_POST['reenviar'])) {
   enviarCodigo($email);
-  echo "<script>alert('Novo código enviado!'); window.location.href = '../src/backend/confirmarConta.php';</script>";
+  echo "<script>alert('Novo código enviado!'); window.location.href = '../pages/confirmarConta.php';</script>";
   exit();
 }
 
