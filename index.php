@@ -38,7 +38,7 @@
         </div>
         <button type="submit" class="form-btn">Login</button>
       </form>
-      <p><a class="esqueci" href="/src/pages/confirmarEmail.php">Esqueci minha senha!</a></p>
+      <p><a class="esqueci" href="#">Esqueci minha senha!</a></p>
       <a href="/src/pages/register.html">Criar Nova Conta</a>
       <p> --------------- OU --------------- </p>
       <div class="social-media">
