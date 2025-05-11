@@ -11,30 +11,40 @@ if (!isset($_SESSION['usuario_id'])) {
 $id = $_SESSION['usuario_id'];
 $mensagem = "";
 
-// Atualização do perfil
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  if (isset($_POST['delete'])) {
-    // Exclusão de conta
-    $sql = "DELETE FROM usuarios WHERE id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->execute([$id]);
+// Processar ações de notificação
+if (isset($_POST['marcar_lida'])) {
+  $notificacao_id = $_POST['notificacao_id'];
+  $sql = "UPDATE notificacoes SET lida = 1 WHERE id = ? AND usuario_id = ?";
+  $stmt = $conn->prepare($sql);
+  $stmt->execute([$notificacao_id, $id]);
+}
 
+if (isset($_POST['excluir_notificacao'])) {
+  $notificacao_id = $_POST['notificacao_id'];
+  $sql = "DELETE FROM notificacoes WHERE id = ? AND usuario_id = ?";
+  $stmt = $conn->prepare($sql);
+  $stmt->execute([$notificacao_id, $id]);
+}
+
+// Atualização de dados
+if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['marcar_lida']) && !isset($_POST['excluir_notificacao'])) {
+  if (isset($_POST['delete'])) {
+    $stmt = $conn->prepare("DELETE FROM usuarios WHERE id = ?");
+    $stmt->execute([$id]);
     session_destroy();
     header("Location: ../../index.php");
     exit();
   } else {
-    $nome = $_POST['nome'];
+    $nome  = $_POST['nome'];
     $email = $_POST['email'];
-    $senha = !empty($_POST['senha']) && $_POST['senha'] !== '********' ? password_hash($_POST['senha'], PASSWORD_DEFAULT) : null;
-    $cpf = $_POST['cpf'];
+    $senha = (!empty($_POST['senha']) && $_POST['senha'] !== '********') ? password_hash($_POST['senha'], PASSWORD_DEFAULT) : null;
+    $cpf   = $_POST['cpf'];
 
     if ($senha) {
-      $sql = "UPDATE usuarios SET nome = ?, email = ?, senha = ?, cpf = ? WHERE id = ?";
-      $stmt = $conn->prepare($sql);
+      $stmt = $conn->prepare("UPDATE usuarios SET nome = ?, email = ?, senha = ?, cpf = ? WHERE id = ?");
       $stmt->execute([$nome, $email, $senha, $cpf, $id]);
     } else {
-      $sql = "UPDATE usuarios SET nome = ?, email = ?, cpf = ? WHERE id = ?";
-      $stmt = $conn->prepare($sql);
+      $stmt = $conn->prepare("UPDATE usuarios SET nome = ?, email = ?, cpf = ? WHERE id = ?");
       $stmt->execute([$nome, $email, $cpf, $id]);
     }
 
@@ -43,28 +53,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 // Buscar dados do usuário
-$sql = "SELECT nome, email, cpf FROM usuarios WHERE id = ?";
-$stmt = $conn->prepare($sql);
+$stmt = $conn->prepare("SELECT nome, email, cpf FROM usuarios WHERE id = ?");
 $stmt->execute([$id]);
 $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Se não existir tipo_perfil, definir um valor padrão
-if (!isset($usuario['tipo_perfil'])) {
-  $usuario['tipo_perfil'] = 'Investor profile';
-}
-
-// Extrair o primeiro nome para exibição no cabeçalho
+// Definir tipo de perfil padrão
+$usuario['tipo_perfil'] = $usuario['tipo_perfil'] ?? 'Investor profile';
 $primeiro_nome = explode(' ', $usuario['nome'])[0];
 
-// Buscar saldo total
-$sql_saldo = "SELECT SUM(valor) as saldo FROM transacoes WHERE usuario_id = ?";
-$stmt_saldo = $conn->prepare($sql_saldo);
-$stmt_saldo->execute([$id]);
-$saldo = $stmt_saldo->fetch(PDO::FETCH_ASSOC)['saldo'] ?? 0;
+// Buscar saldo
+$stmt = $conn->prepare("SELECT SUM(valor) as saldo FROM transacoes WHERE usuario_id = ?");
+$stmt->execute([$id]);
+$saldo = $stmt->fetch(PDO::FETCH_ASSOC)['saldo'] ?? 0;
 $saldo_formatado = number_format($saldo, 2, ',', '.');
 
-// Data atual
-$data_atual = "31-03-25 20:00";
+// Buscar notificações não lidas
+$sql_notificacoes = "SELECT * FROM notificacoes WHERE usuario_id = ? AND lida = 0 ORDER BY data_criacao DESC LIMIT 3";
+$stmt_notificacoes = $conn->prepare($sql_notificacoes);
+$stmt_notificacoes->execute([$id]);
+$notificacoes = $stmt_notificacoes->fetchAll(PDO::FETCH_ASSOC);
+
+// Contar total de notificações não lidas
+$sql_count = "SELECT COUNT(*) as total FROM notificacoes WHERE usuario_id = ? AND lida = 0";
+$stmt_count = $conn->prepare($sql_count);
+$stmt_count->execute([$id]);
+$total_nao_lidas = $stmt_count->fetch(PDO::FETCH_ASSOC)['total'];
+
+$data_atual = date("d-m-y H:i");
 ?>
 
 <!DOCTYPE html>
@@ -74,17 +89,37 @@ $data_atual = "31-03-25 20:00";
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Perfil do Usuário - FinPlan</title>
   <link rel="stylesheet" href="../css/perfil.css">
+  <link rel="stylesheet" href="../css/notificacoes.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <div class="logo">
-      <div class="logo-circle">R$</div>
-      <div class="logo-text">
-        <span class="fin">Fin</span><span class="plan">Plan</span>
+<div class="sidebar">
+  <div class="logo">
+    <?php 
+    $logoWidth = 50; // Largura em pixels
+    $logoHeight = 50; // Altura em pixels
+    
+    // Caminho para a imagem
+    $logoPath = __DIR__ . "/../img/logo.png";
+    
+    if (file_exists($logoPath)): 
+      // Estilo inline para controlar o tamanho
+      $logoStyle = "width: {$logoWidth}px; height: {$logoHeight}px; object-fit: cover; border-radius: 50%;";
+    ?>
+      <img 
+        src="../img/logo.png?v=<?= time() ?>" 
+        alt="FinPlan Logo" 
+        class="logo-image" 
+        style="<?= $logoStyle ?>"
+      >
+    <?php else: ?>
+      <!-- Ajuste o tamanho do círculo de fallback também -->
+      <div class="logo-circle" style="width: <?= $logoWidth ?>px; height: <?= $logoHeight ?>px; line-height: <?= $logoHeight ?>px; font-size: <?= $logoWidth/2 ?>px;">
+        R$
       </div>
-    </div>
+    <?php endif; ?>
+    <div class="logo-text"><span class="fin">Fin</span><span class="plan">Plan</span></div>
+  </div>
 
     <ul class="menu">
       <li><a href="#"><i class="fas fa-th-large"></i> Dashboard</a></li>
@@ -99,96 +134,110 @@ $data_atual = "31-03-25 20:00";
     </ul>
 
     <div class="theme-toggle">
-      <div class="toggle-track">
-        <div class="toggle-thumb"></div>
-      </div>
+      <div class="toggle-track"><div class="toggle-thumb"></div></div>
       <i class="fas fa-sun sun"></i>
       <i class="fas fa-moon moon"></i>
     </div>
   </div>
 
-  <!-- Main Content -->
   <div class="main-content">
-    <!-- Header -->
     <div class="header">
       <div class="header-left">
         <div class="date">Today: <?= $data_atual ?></div>
-        <div class="balance">General balance: R$ 15.543,00 (<span>↑ R$ 124,32</span>)</div>
+        <div class="balance">General balance: R$ <?= $saldo_formatado ?> (<span>↑ R$ 124,32</span>)</div>
       </div>
       <div class="header-right">
-        <div class="notification">
+        <div class="notification" id="notificationIcon">
           <i class="fas fa-bell"></i>
+          <?php if ($total_nao_lidas > 0): ?>
+            <div class="notification-badge"><?= $total_nao_lidas > 9 ? '9+' : $total_nao_lidas ?></div>
+          <?php endif; ?>
+          
+          <!-- Painel de Notificações -->
+          <div class="notification-panel" id="notificationPanel">
+            <div class="notification-header">
+              <div class="notification-title">
+                Notificações <i class="fas fa-check-circle notification-check"></i>
+              </div>
+            </div>
+            <div class="notification-list">
+              <?php if (count($notificacoes) > 0): ?>
+                <?php foreach ($notificacoes as $notificacao): ?>
+                  <div class="notification-item unread">
+                    <div class="notification-avatar"></div>
+                    <div class="notification-content">
+                      <?= htmlspecialchars($notificacao['mensagem']) ?>
+                    </div>
+                    <div class="notification-close" data-id="<?= $notificacao['id'] ?>">
+                      <i class="fas fa-times"></i>
+                    </div>
+                  </div>
+                <?php endforeach; ?>
+              <?php else: ?>
+                <div class="notification-item">
+                  <div class="notification-content">
+                    Você não tem novas notificações.
+                  </div>
+                </div>
+              <?php endif; ?>
+            </div>
+            <div class="notification-footer">
+              <a href="todas_notificacoes.php" class="show-all-btn">
+                Mostrar todas <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
         </div>
         <div class="user-profile">
           <div class="user-avatar"></div>
           <div class="user-name"><?= htmlspecialchars($primeiro_nome) ?></div>
         </div>
-        <div class="menu-dots">
-          <i class="fas fa-ellipsis-v"></i>
-        </div>
+        <div class="menu-dots"><i class="fas fa-ellipsis-v"></i></div>
       </div>
     </div>
 
-    <!-- Content Panel -->
     <div class="content-panel">
-      <!-- Tabs -->
       <div class="tabs">
         <button class="tab active">Dados da conta</button>
         <button class="tab">Cartões</button>
       </div>
 
       <form method="POST" id="profileForm">
-        <!-- Profile Content -->
         <div class="profile-content">
           <div class="profile-header">
             <div class="profile-avatar"></div>
             <div class="profile-info">
               <div class="profile-name"><?= htmlspecialchars($usuario['nome']) ?></div>
-              <div class="profile-type">
-                <?= htmlspecialchars($usuario['tipo_perfil']) ?> <i class="fas fa-arrow-right"></i>
-              </div>
-              
-              <!-- Botão Editar (visível inicialmente) -->
-              <button type="button" class="edit-button" id="editButton">
-                <i class="fas fa-pen-square"></i> Editar
-              </button>
-              
-              <!-- Botões Salvar e Cancelar (ocultos inicialmente) -->
+              <div class="profile-type"><?= htmlspecialchars($usuario['tipo_perfil']) ?> <i class="fas fa-arrow-right"></i></div>
+
+              <button type="button" class="edit-button" id="editButton"><i class="fas fa-pen-square"></i> Editar</button>
+
               <div class="action-buttons" id="actionButtons">
-                <button type="button" class="save-button" id="saveButton">
-                  <i class="fas fa-save"></i> Salvar
-                </button>
-                <button type="button" class="cancel-button" id="cancelButton">
-                  <i class="fas fa-times"></i> Cancelar
-                </button>
+                <button type="button" class="save-button" id="saveButton"><i class="fas fa-save"></i> Salvar</button>
+                <button type="button" class="cancel-button" id="cancelButton"><i class="fas fa-times"></i> Cancelar</button>
               </div>
             </div>
           </div>
 
-          <!-- Form Fields -->
           <div class="form-fields">
             <div class="form-field">
               <i class="fas fa-user"></i>
-              <input type="text" name="nome" placeholder="Full name" value="<?= htmlspecialchars($usuario['nome'] ?? '') ?>" readonly id="nomeInput">
+              <input type="text" name="nome" id="nomeInput" placeholder="Full name" value="<?= htmlspecialchars($usuario['nome']) ?>" readonly>
             </div>
-            
             <div class="form-field">
               <i class="fas fa-envelope"></i>
-              <input type="email" name="email" placeholder="Email" value="<?= htmlspecialchars($usuario['email'] ?? '') ?>" readonly id="emailInput">
+              <input type="email" name="email" id="emailInput" placeholder="Email" value="<?= htmlspecialchars($usuario['email']) ?>" readonly>
             </div>
-            
             <div class="form-field">
               <i class="fas fa-lock"></i>
-              <input type="password" name="senha" placeholder="Password" value="********" readonly id="senhaInput">
+              <input type="password" name="senha" id="senhaInput" placeholder="Password" value="********" readonly>
               <i class="fas fa-eye eye-icon" id="togglePassword"></i>
             </div>
-            
             <div class="form-field">
               <i class="fas fa-credit-card"></i>
-              <input type="text" name="cpf" placeholder="CPF" value="<?= htmlspecialchars($usuario['cpf'] ?? '') ?>" readonly id="cpfInput">
+              <input type="text" name="cpf" id="cpfInput" placeholder="CPF" value="<?= htmlspecialchars($usuario['cpf']) ?>" readonly>
             </div>
 
-            <!-- Delete Button -->
             <div class="delete-button-container">
               <button type="submit" name="delete" class="delete-button" onclick="return confirm('Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.')">
                 <i class="fas fa-trash"></i> Excluir
@@ -200,109 +249,98 @@ $data_atual = "31-03-25 20:00";
     </div>
   </div>
 
+  <!-- Form para marcar notificação como lida -->
+  <form id="markReadForm" method="POST" style="display: none;">
+    <input type="hidden" name="marcar_lida" value="1">
+    <input type="hidden" name="notificacao_id" id="markReadId">
+  </form>
+
+  <!-- Form para excluir notificação -->
+  <form id="deleteNotificationForm" method="POST" style="display: none;">
+    <input type="hidden" name="excluir_notificacao" value="1">
+    <input type="hidden" name="notificacao_id" id="deleteNotificationId">
+  </form>
+
   <script>
-    // Armazenar valores originais dos campos
     const originalValues = {
-      nome: '<?= htmlspecialchars($usuario['nome'] ?? '') ?>',
-      email: '<?= htmlspecialchars($usuario['email'] ?? '') ?>',
+      nome: '<?= htmlspecialchars($usuario['nome']) ?>',
+      email: '<?= htmlspecialchars($usuario['email']) ?>',
       senha: '********',
-      cpf: '<?= htmlspecialchars($usuario['cpf'] ?? '') ?>'
+      cpf: '<?= htmlspecialchars($usuario['cpf']) ?>'
     };
 
-    // Toggle password visibility
     document.getElementById('togglePassword').addEventListener('click', function() {
       const senhaInput = document.getElementById('senhaInput');
-      if (senhaInput.type === 'password') {
-        senhaInput.type = 'text';
-        this.classList.remove('fa-eye');
-        this.classList.add('fa-eye-slash');
-      } else {
-        senhaInput.type = 'password';
-        this.classList.remove('fa-eye-slash');
-        this.classList.add('fa-eye');
-      }
+      senhaInput.type = senhaInput.type === 'password' ? 'text' : 'password';
+      this.classList.toggle('fa-eye');
+      this.classList.toggle('fa-eye-slash');
     });
 
-    // Elementos DOM
     const editButton = document.getElementById('editButton');
     const actionButtons = document.getElementById('actionButtons');
     const saveButton = document.getElementById('saveButton');
     const cancelButton = document.getElementById('cancelButton');
     const inputs = ['nomeInput', 'emailInput', 'senhaInput', 'cpfInput'];
-    const form = document.getElementById('profileForm');
 
-    // Função para entrar no modo de edição
-    function enableEditMode() {
-      // Ocultar botão editar e mostrar botões de ação
+    editButton.addEventListener('click', () => {
       editButton.style.display = 'none';
       actionButtons.style.display = 'flex';
-      
-      // Habilitar campos para edição
-      inputs.forEach(id => {
-        document.getElementById(id).readOnly = false;
-      });
-      
-      // Focar no primeiro campo
+      inputs.forEach(id => document.getElementById(id).readOnly = false);
       document.getElementById('nomeInput').focus();
-    }
+    });
 
-    // Função para sair do modo de edição
-    function disableEditMode() {
-      // Mostrar botão editar e ocultar botões de ação
-      editButton.style.display = 'flex';
-      actionButtons.style.display = 'none';
-      
-      // Desabilitar campos para edição
-      inputs.forEach(id => {
-        document.getElementById(id).readOnly = true;
-      });
-    }
-
-    // Função para restaurar valores originais
-    function restoreOriginalValues() {
+    cancelButton.addEventListener('click', () => {
       document.getElementById('nomeInput').value = originalValues.nome;
       document.getElementById('emailInput').value = originalValues.email;
       document.getElementById('senhaInput').value = originalValues.senha;
       document.getElementById('cpfInput').value = originalValues.cpf;
-    }
-
-    // Event listeners
-    editButton.addEventListener('click', enableEditMode);
-    
-    saveButton.addEventListener('click', function() {
-      // Submeter o formulário
-      form.submit();
-    });
-    
-    cancelButton.addEventListener('click', function() {
-      // Restaurar valores originais e sair do modo de edição
-      restoreOriginalValues();
-      disableEditMode();
+      editButton.style.display = 'flex';
+      actionButtons.style.display = 'none';
+      inputs.forEach(id => document.getElementById(id).readOnly = true);
     });
 
-    // Tab switching
-    const tabs = document.querySelectorAll('.tab');
-    tabs.forEach(tab => {
-      tab.addEventListener('click', function() {
-        tabs.forEach(t => t.classList.remove('active'));
-        this.classList.add('active');
-      });
-    });
+    saveButton.addEventListener('click', () => document.getElementById('profileForm').submit());
 
-    // Theme toggle
     document.querySelector('.toggle-track').addEventListener('click', function() {
       const thumb = document.querySelector('.toggle-thumb');
+      const body = document.body;
       if (thumb.style.right === '3px') {
         thumb.style.right = '33px';
-        document.body.classList.add('light-theme');
+        body.classList.add('light-theme');
       } else {
         thumb.style.right = '3px';
-        document.body.classList.remove('light-theme');
+        body.classList.remove('light-theme');
       }
     });
 
+    // Notificações
+    const notificationIcon = document.getElementById('notificationIcon');
+    const notificationPanel = document.getElementById('notificationPanel');
+    
+    // Abrir/fechar painel de notificações
+    notificationIcon.addEventListener('click', function(e) {
+      e.stopPropagation();
+      notificationPanel.style.display = notificationPanel.style.display === 'block' ? 'none' : 'block';
+    });
+    
+    // Fechar painel ao clicar fora
+    document.addEventListener('click', function(e) {
+      if (!notificationPanel.contains(e.target) && e.target !== notificationIcon) {
+        notificationPanel.style.display = 'none';
+      }
+    });
+    
+    // Fechar notificação individual
+    const closeButtons = document.querySelectorAll('.notification-close');
+    closeButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const notificationId = this.getAttribute('data-id');
+        document.getElementById('deleteNotificationId').value = notificationId;
+        document.getElementById('deleteNotificationForm').submit();
+      });
+    });
+
     <?php if (!empty($mensagem)): ?>
-    // Exibir mensagem de sucesso
     alert('<?= $mensagem ?>');
     <?php endif; ?>
   </script>
