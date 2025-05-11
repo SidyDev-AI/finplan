@@ -29,6 +29,7 @@ body {
   margin-bottom: 30px;
 }
 
+/* Estilos para o logo original (círculo com R$) */
 .logo-circle {
   width: 40px;
   height: 40px;
@@ -39,6 +40,37 @@ body {
   justify-content: center;
   color: #279E8E;
   font-weight: bold;
+}
+
+.logo-image {
+  width: 20px; /* Ajuste este valor conforme necessário */
+  height: 20px; /* Mantenha igual à largura */
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #FFFFFF;
+  border: 2px solid #279E8E;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+.logo-image:hover {
+  transform: scale(1.05);
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+  .logo-image {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-image {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 .logo-text {
@@ -424,4 +456,78 @@ body {
 
 .delete-button:hover {
   background-color: #C62828;
+}
+
+/* Tema claro */
+body.light-theme {
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+body.light-theme .sidebar {
+  background-color: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .menu a {
+  color: #666;
+}
+
+body.light-theme .menu a:hover, 
+body.light-theme .menu a.active {
+  color: #279E8E;
+}
+
+body.light-theme .header,
+body.light-theme .content-panel {
+  background-color: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .date,
+body.light-theme .menu-dots {
+  color: #666;
+}
+
+body.light-theme .balance,
+body.light-theme .user-name,
+body.light-theme .profile-name {
+  color: #333;
+}
+
+body.light-theme .form-field input {
+  color: #333;
+  border-bottom-color: rgba(0, 0, 0, 0.2);
+}
+
+body.light-theme .form-field i,
+body.light-theme .eye-icon {
+  color: #666;
+}
+
+body.light-theme .tab {
+  color: #333;
+}
+
+body.light-theme .notification-panel {
+  background-color: #ffffff;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+body.light-theme .notification-content,
+body.light-theme .notification-title {
+  color: #333;
+}
+
+body.light-theme .notification-item {
+  border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .show-all-btn {
+  color: #333;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+body.light-theme .show-all-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
 }

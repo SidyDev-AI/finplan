@@ -27,13 +27,29 @@ $sqlTransacoes = "CREATE TABLE IF NOT EXISTS transacoes (
   FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 )";
 
+$sqlNotificacoes = "CREATE TABLE IF NOT EXISTS notificacoes (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      usuario_id INTEGER NOT NULL,
+      titulo TEXT NOT NULL,
+      mensagem TEXT NOT NULL,
+      remetente TEXT DEFAULT 'Sistema',
+      data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      lida INTEGER DEFAULT 0,
+      tipo TEXT DEFAULT 'info',
+      FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+    )";
+
+
     $pdo->exec($sql);
     $pdo->exec($sqlTransacoes);
+    $pdo->exec($sqlNotificacoes);
     return $pdo;
   } catch (PDOException $e) {
     die("Erro no banco de dados: " . $e->getMessage());
   }
 }
+
+
 
 return conectarBanco();
 ?>
