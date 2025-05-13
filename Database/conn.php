@@ -9,7 +9,8 @@ function conectarBanco() {
     $pdo = new PDO("sqlite:$databasePath");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $sql = "CREATE TABLE IF NOT EXISTS usuarios (
+    // Tabela de usuários
+    $sqlUsuarios = "CREATE TABLE IF NOT EXISTS usuarios (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       nome TEXT NOT NULL,
       email TEXT NOT NULL UNIQUE,
@@ -18,16 +19,20 @@ function conectarBanco() {
       data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )";
 
-$sqlTransacoes = "CREATE TABLE IF NOT EXISTS transacoes (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  usuario_id INTEGER NOT NULL,
-  valor REAL NOT NULL,
-  descricao TEXT,
-  data DATE DEFAULT CURRENT_DATE,
-  FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
-)";
+    // Tabela de transações com categoria e tipo
+    $sqlTransacoes = "CREATE TABLE IF NOT EXISTS transacoes (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      usuario_id INTEGER NOT NULL,
+      valor REAL NOT NULL,
+      descricao TEXT,
+      categoria TEXT,
+      tipo TEXT CHECK(tipo IN ('Entrada', 'Saida')) NOT NULL,
+      data DATE DEFAULT CURRENT_DATE,
+      FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+    )";
 
-$sqlNotificacoes = "CREATE TABLE IF NOT EXISTS notificacoes (
+    // Tabela de notificações
+    $sqlNotificacoes = "CREATE TABLE IF NOT EXISTS notificacoes (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       usuario_id INTEGER NOT NULL,
       titulo TEXT NOT NULL,
@@ -39,17 +44,17 @@ $sqlNotificacoes = "CREATE TABLE IF NOT EXISTS notificacoes (
       FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
     )";
 
-
-    $pdo->exec($sql);
+    // Criação das tabelas
+    $pdo->exec($sqlUsuarios);
     $pdo->exec($sqlTransacoes);
     $pdo->exec($sqlNotificacoes);
+
     return $pdo;
+
   } catch (PDOException $e) {
     die("Erro no banco de dados: " . $e->getMessage());
   }
 }
-
-
 
 return conectarBanco();
 ?>
