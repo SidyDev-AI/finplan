@@ -122,7 +122,7 @@ $data_atual = date("d-m-y H:i");
   </div>
 
     <ul class="menu">
-      <li><a href="#"><i class="fas fa-th-large"></i> Dashboard</a></li>
+      <li><a href="dashboard.php"><i class="fas fa-th-large"></i> Dashboard</a></li>
       <li><a href="#"><i class="fas fa-wallet"></i> Budget</a></li>
       <li><a href="#"><i class="fas fa-chart-pie"></i> Categories</a></li>
       <li><a href="#"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
