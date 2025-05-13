@@ -1,0 +1,239 @@
+.panel {
+  background-color: #163546;
+  border-radius: 8px;
+  flex: 1;
+  display: flex;
+  padding: 25px;
+  justify-content: space-between;
+}
+
+.resumoSaldo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 15px;
+
+  & h1 {
+    font-size: 32pix;
+    margin-bottom: 30px;
+  }
+
+  & .cards {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+    & .card {
+      width: 240px;
+      height: 80px;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      justify-content: center;
+      border-radius: 5px;
+
+      & p {
+        font-size: 16px;
+        margin-bottom: 5px;
+      }
+
+      & h2 {
+        font-size: 24px;
+      }
+    }
+
+    & .entrada {
+      border: 3px solid #24A646;
+      & p, h2 {
+        color: #24A646;
+      }
+    }
+
+    & .saida {
+      border: 3px solid #D73131;
+      & p, h2 {
+        color: #D73131;
+      }
+    }
+
+    & .total {
+      border: 3px solid #1C0EE3;
+      & p, h2 {
+        color: #1C0EE3;
+      }
+    }
+  }
+}
+
+.title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+
+    & h1 {
+      font-size: 32px;
+    }
+
+    & button {
+      border-radius: 5px;
+      padding: 8px 15px;
+      border: none;
+      background-color: #279E8F;
+      font-size: 16px;
+      font-weight: bold;
+      color: #ffffff;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      cursor: pointer;
+      transition: .9s ease;
+    } 
+    & button:hover {
+      background-color: #2c736a;
+    }
+  }
+
+.transacoes {
+  width: 574px;
+  height: 520px;
+  background-color: #3B6276;
+  border-radius: 0 15px 15px 0;
+  padding: 30px 10px;
+  display: flex;
+  justify-content: center;
+
+  & .content-transactions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    max-height: 450px;
+    overflow-y: auto;
+
+    & .list-transactions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 534px;
+
+      & .btn {
+        cursor: pointer;
+        background-color: transparent;
+        color: #ffffff;
+      }
+    }
+
+    & button {
+      border-radius: 5px;
+      padding: 8px 15px;
+      border: none;
+      background-color: #B9F1EA;
+      font-size: 16px;
+      font-weight: bold;
+      color: #000;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      cursor: pointer;
+      transition: .9s ease;
+    } 
+    & button:hover {
+      background-color: rgb(86, 185, 170);
+    }
+  }
+}
+
+.content-transactions::-webkit-scrollbar {
+  width: 8px;
+}
+
+.content-transactions::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.content-transactions::-webkit-scrollbar-thumb:hover {
+  background-color: #999;
+}
+
+.entrada {
+  color: green;
+}
+.saida {
+  color: red;
+}
+
+.list-transactions {
+  position: relative;
+}
+
+.menu-transacao {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  z-index: 10;
+  width: 180px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+
+.menu-transacao ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu-transacao li {
+  margin: 0.3rem 0;
+}
+
+.menu-transacao button#opt {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  padding: 0.4rem;
+  transition: background 0.2s;
+}
+
+.menu-transacao button#opt:hover {
+  background: #f0f0f0;
+}
+
+.content-transactions-wrapper {
+  max-height: 500px; /* altura total do bloco, incluindo botão */
+  display: flex;
+  flex-direction: column;
+}
+
+.content-transactions {
+  max-height: 450px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.btn-extrato {
+  margin-top: 10px;
+  align-self: center;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-extrato i {
+  margin-left: 5px;
+}
+
+.btn-extrato:hover {
+  background-color: #0056b3;
+}
+

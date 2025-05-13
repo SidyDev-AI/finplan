@@ -10,6 +10,7 @@ body {
   color: #FFFFFF;
   display: flex;
   min-height: 100vh;
+  padding: 20px;
 }
 
 /* Sidebar */
@@ -17,9 +18,10 @@ body {
   width: 205px;
   background-color: #163546;
   padding: 20px;
-  min-height: 100vh;
+  min-height: 95vh;
   display: flex;
   flex-direction: column;
+  border-radius: 0 15px 15px 0;
 }
 
 .logo {
@@ -163,7 +165,7 @@ body {
 /* Main Content */
 .main-content {
   flex: 1;
-  padding: 20px;
+  padding-left: 20px;
   display: flex;
   flex-direction: column;
 }
