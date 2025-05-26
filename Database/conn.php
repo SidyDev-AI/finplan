@@ -8,6 +8,7 @@ function conectarBanco() {
   try {
     $pdo = new PDO("sqlite:$databasePath");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo->exec('PRAGMA foreign_keys = ON;');
 
     // Tabela de usuários
     $sqlUsuarios = "CREATE TABLE IF NOT EXISTS usuarios (
@@ -23,13 +24,19 @@ function conectarBanco() {
     $sqlTransacoes = "CREATE TABLE IF NOT EXISTS transacoes (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       usuario_id INTEGER NOT NULL,
+      tipo TEXT NOT NULL CHECK (tipo IN ('Entrada', 'Saida')),
       valor REAL NOT NULL,
+      data DATE NOT NULL,
+      categoria TEXT NOT NULL,
       descricao TEXT,
-      categoria TEXT,
-      tipo TEXT CHECK(tipo IN ('Entrada', 'Saida')) NOT NULL,
-      data DATE DEFAULT CURRENT_DATE,
+      metodo_pagamento TEXT NOT NULL,
+      tipo_pagamento TEXT NOT NULL,
+      parcelamento TEXT CHECK (parcelamento IN ('yes', 'no')) NOT NULL,
+      qtd_parcelas INTEGER DEFAULT 1,
+      criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
     )";
+
 
     // Tabela de notificações
     $sqlNotificacoes = "CREATE TABLE IF NOT EXISTS notificacoes (

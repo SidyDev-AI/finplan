@@ -237,3 +237,216 @@
   background-color: #0056b3;
 }
 
+:root {
+    --dark-bg: #0d1b2a;
+    --dark-panel: #1b2e45;
+    --popup-bg: #3a5273;
+    --light-text: #ffffff;
+    --accent-green: #4CAF50;
+    --accent-red: #f44336;
+    --accent-blue: #3c6dd8;
+    --border-radius: 8px;
+    --input-bg: #f5f5f5;
+    --input-text: #333333;
+}
+
+/* Pop-up de Nova Transação */
+.transaction-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--popup-bg);
+    border-radius: var(--border-radius);
+    padding: 25px;
+    width: 450px;
+    z-index: 20;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.popup-title {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.close-popup {
+    background-color: transparent;
+    border: none;
+    color: var(--light-text);
+    font-size: 20px;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-popup:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Toggle para Entrada/Saída */
+.transaction-type-toggle {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    display: flex;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.toggle-option {
+    flex: 1;
+    text-align: center;
+    padding: 10px 0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-weight: bold;
+}
+
+.toggle-option.active {
+    background-color: var(--accent-green);
+}
+
+.toggle-option.expense {
+    background-color: transparent;
+}
+
+.toggle-option.expense.active {
+    background-color: var(--accent-red);
+}
+
+/* Formulário */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: var(--border-radius);
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    font-size: 16px;
+}
+
+.form-input:focus {
+    outline: 2px solid var(--accent-blue);
+}
+
+/* Data */
+.date-group {
+    display: flex;
+    gap: 10px;
+}
+
+.date-select {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: var(--border-radius);
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    font-size: 16px;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 15px;
+    cursor: pointer;
+}
+
+/* Forma de Pagamento */
+.payment-row {
+    display: flex;
+    gap: 10px;
+}
+
+.payment-column {
+    flex: 1;
+}
+
+/* Parcelamento */
+.installment-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.installment-toggle {
+    display: flex;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.installment-option {
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-weight: bold;
+}
+
+.installment-option.active {
+    background-color: var(--accent-green);
+}
+
+/* Botão de Salvar */
+.save-button {
+    background-color: var(--accent-green);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    float: right;
+    transition: background-color 0.3s;
+}
+
+.save-button:hover {
+    background-color: #3d9140;
+}
+
+/* Dropdown style */
+.dropdown {
+    position: relative;
+    width: 100%;
+}
+
+.dropdown-select {
+    width: 80px;
+    padding: 12px;
+    border: none;
+    border-radius: var(--border-radius);
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    font-size: 16px;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 15px;
+    cursor: pointer;
+}
+
+.all {
+  width: 100%;
+}
