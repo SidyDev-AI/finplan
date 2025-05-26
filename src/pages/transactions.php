@@ -69,7 +69,7 @@ $stmt->execute([$id]);
 $totalSaidas = $stmt->fetch(PDO::FETCH_ASSOC)['total_saidas'] ?? 0;
 
 // Cálculo do total do mês
-$totalMes = $totalEntradas + $totalSaidas;
+$totalMes = $totalEntradas - $totalSaidas;
 
 // Formatação dos valores para moeda brasileira
 $entradasFormatado = number_format($totalEntradas, 2, ',', '.');
@@ -89,6 +89,7 @@ $totalMesFormatado = number_format($totalMes, 2, ',', '.');
   <link rel="stylesheet" href="../css/notificacoes.css">
   <link rel="stylesheet" href="../css/transactions.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 </head>
 <body>
 <div class="sidebar">
@@ -216,8 +217,127 @@ $totalMesFormatado = number_format($totalMes, 2, ',', '.');
       <div>
         <div class="title">
           <h1>Últimas Transações</h1>
-          <button><i class="fa-solid fa-plus"></i>Nova Transação</button>
+          <button id="btnNovaTransacao"><i class="fa-solid fa-plus"></i>Nova Transação</button>
         </div>
+
+        <div class="transaction-popup" style="display: none;">
+        
+        <form id="transactionForm" action="../backend/processar_transacao.php" method="post">
+            <!-- Toggle Entrada/Saída -->
+            <div class="transaction-type-toggle">
+                <div class="toggle-option active" id="incomeOption">Entrada</div>
+                <div class="toggle-option expense" id="expenseOption">Saída</div>
+                <input type="hidden" name="transaction_type" id="transactionType" value="income" required>
+            </div>
+            
+            <!-- Valor -->
+            <div class="form-group">
+                <label for="amount" class="form-label">Valor</label>
+                <input type="text" id="amount" name="amount" class="form-input" placeholder="0,00" required>
+            </div>
+            
+            <!-- Data -->
+            <div class="form-group">
+                <label class="form-label">Data</label>
+                <div class="date-group">
+                    <select class="date-select" name="day" id="day" required>
+                        <option value="21" selected>21</option>
+                        <!-- Outros dias seriam gerados dinamicamente -->
+                    </select>
+                    
+                    <select class="date-select" name="month" id="month" required>
+                        <option value="5" selected>Maio</option>
+                        <!-- Outros meses seriam gerados dinamicamente -->
+                    </select>
+                    
+                    <select class="date-select" name="year" id="year" required>
+                        <option value="2025" selected>2025</option>
+                        <!-- Outros anos seriam gerados dinamicamente -->
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Categoria -->
+            <div class="form-group">
+                <label for="category" class="form-label">Categoria</label>
+                <div class="dropdown">
+                    <select id="category" name="category" class="dropdown-select all" required>
+                        <option value="" disabled selected>Selecione uma categoria</option>
+                        <option value="alimentacao">Alimentação</option>
+                        <option value="divida">Dívida</option>
+                        <option value="emprestimo">Empréstimo</option>
+                        <option value="consorcio">Consórcio</option>
+                        <option value="aluguel">Aluguel</option>
+                        <option value="energia">Energia</option>
+                        <option value="internet">Internet</option>
+                        <option value="agua">Água</option>
+                        <option value="lazer">Lazer</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Descrição -->
+            <div class="form-group">
+                <label for="description" class="form-label">Descrição</label>
+                <input type="text" id="description" name="description" class="form-input" placeholder="Digite uma descrição" required>
+            </div>
+            
+            <!-- Forma de Pagamento -->
+            <div class="form-group">
+                <label class="form-label">Forma de Pagamento</label>
+                <div class="payment-row">
+                    <div class="payment-column">
+                        <select class="dropdown-select all" name="payment_method" id="paymentMethod" required>
+                            <option value="nubank" selected>Nubank</option>
+                            <option value="bradesco">Bradesco</option>
+                            <option value="caixa">Caixa Federal</option>
+                            <option value="inter">Inter</option>
+                            <option value="brasil">Banco do Brasil</option>
+                        </select>
+                    </div>
+                    <div class="payment-column">
+                        <select class="dropdown-select all" name="payment_type" id="paymentType" required>
+                            <option value="credit" selected>Crédito</option>
+                            <option value="debit">Débito</option>
+                            <option value="cash">Dinheiro</option>
+                            <option value="pix">PIX</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Parcelamento -->
+            <div class="form-group">
+                <label class="form-label">Parcelamento</label>
+                <div class="installment-group">
+                    <div class="installment-toggle">
+                        <div class="installment-option active" id="installmentYes">Sim</div>
+                        <div class="installment-option" id="installmentNo">Não</div>
+                    </div>
+                    <input type="hidden" name="installment" id="installmentValue" value="yes" required>
+                    
+                    <div id="installmentCountWrapper">
+                        <select class="dropdown-select" name="installment_count" id="installmentCount" required>
+                            <option value="2" selected>2x</option>
+                            <option value="3">3x</option>
+                            <option value="4">4x</option>
+                            <option value="5">5x</option>
+                            <option value="6">6x</option>
+                            <option value="7">7x</option>
+                            <option value="8">8x</option>
+                            <option value="9">9x</option>
+                            <option value="10">10x</option>
+                            <option value="11">11x</option>
+                            <option value="12">12x</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Botão de Salvar -->
+            <button type="submit" class="save-button">Salvar</button>
+        </form>
+    </div>
 
         <div class="transacoes">
           <div class="content-transactions-wrapper">
@@ -347,6 +467,128 @@ $totalMesFormatado = number_format($totalMes, 2, ',', '.');
       // Abrir modal ou nova página
       window.location.href = `visualizar.php?id=${id}`;
     }
+
+  // Mostrar o pop-up ao clicar no botão "Nova Transação"
+  const botaoNovaTransacao = document.getElementById('btnNovaTransacao');
+  const popupTransacao = document.querySelector('.transaction-popup');
+
+  botaoNovaTransacao.addEventListener('click', () => {
+    popupTransacao.style.display = 'block';
+  });
+
+  // (Opcional) Fechar pop-up ao clicar fora dele
+  document.addEventListener('click', function(event) {
+    if (
+      popupTransacao.style.display === 'block' &&
+      !popupTransacao.contains(event.target) &&
+      event.target !== botaoNovaTransacao
+    ) {
+      popupTransacao.style.display = 'none';
+    }
+  });
+
+
+    // Transaction Type Toggle
+    const incomeOption = document.getElementById('incomeOption');
+    const expenseOption = document.getElementById('expenseOption');
+    const transactionType = document.getElementById('transactionType');
+
+    incomeOption.addEventListener('click', () => {
+        incomeOption.classList.add('active');
+        expenseOption.classList.remove('active');
+        transactionType.value = 'income';
+    });
+
+    expenseOption.addEventListener('click', () => {
+        expenseOption.classList.add('active');
+        incomeOption.classList.remove('active');
+        transactionType.value = 'expense';
+    });
+
+    // Installment Toggle
+    const installmentYes = document.getElementById('installmentYes');
+    const installmentNo = document.getElementById('installmentNo');
+    const installmentValue = document.getElementById('installmentValue');
+    const installmentCountWrapper = document.getElementById('installmentCountWrapper');
+
+    installmentYes.addEventListener('click', () => {
+        installmentYes.classList.add('active');
+        installmentNo.classList.remove('active');
+        installmentValue.value = 'yes';
+        installmentCountWrapper.style.display = 'block'; // Mostrar opções de parcelas
+    });
+
+    installmentNo.addEventListener('click', () => {
+        installmentNo.classList.add('active');
+        installmentYes.classList.remove('active');
+        installmentValue.value = 'no';
+        installmentCountWrapper.style.display = 'none'; // Esconder opções de parcelas
+    });
+
+    // Geração dinâmica das opções de Data
+    const daySelect = document.getElementById('day');
+    const monthSelect = document.getElementById('month');
+    const yearSelect = document.getElementById('year');
+
+    function populateDateSelectors() {
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth() + 1;
+        const currentDay = currentDate.getDate();
+
+        // Anos de 2020 até o ano atual
+        for (let year = currentYear; year >= 2020; year--) {
+            const option = document.createElement('option');
+            option.value = year;
+            option.textContent = year;
+            yearSelect.appendChild(option);
+        }
+
+        // Meses (1 a 12)
+        const meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+                       "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+        for (let i = 1; i <= 12; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = meses[i - 1];
+            monthSelect.appendChild(option);
+        }
+
+        // Dias (1 a 31 - ajustado dinamicamente)
+        function updateDays() {
+            daySelect.innerHTML = '';
+            const selectedYear = parseInt(yearSelect.value);
+            const selectedMonth = parseInt(monthSelect.value);
+
+            const daysInMonth = new Date(selectedYear, selectedMonth, 0).getDate();
+
+            for (let d = 1; d <= daysInMonth; d++) {
+                const option = document.createElement('option');
+                option.value = d;
+                option.textContent = d;
+                daySelect.appendChild(option);
+            }
+        }
+
+        monthSelect.addEventListener('change', updateDays);
+        yearSelect.addEventListener('change', updateDays);
+
+        updateDays(); // Inicializar dias corretamente
+    }
+
+    // Inicializa os selects de data
+    populateDateSelectors();
+
+    // Inicialização dos valores padrões
+    window.addEventListener('DOMContentLoaded', () => {
+        if (installmentValue.value === 'no') {
+            installmentCountWrapper.style.display = 'none';
+        }
+    });
+
+
+
   </script>
+
 </body>
 </html>
