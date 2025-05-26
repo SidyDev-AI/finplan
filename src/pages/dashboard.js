@@ -1,4 +1,5 @@
 import { Chart } from "@/components/ui/chart"
+// Removendo a importação que estava causando o problema
 document.addEventListener("DOMContentLoaded", () => {
   // Configuração do tema
   const themeSwitch = document.getElementById("theme-switch")

@@ -57,9 +57,17 @@ $stmt = $conn->prepare("SELECT nome, email, cpf FROM usuarios WHERE id = ?");
 $stmt->execute([$id]);
 $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
+if (!$usuario) {
+  // Usuário não encontrado
+  $_SESSION = [];
+  session_destroy();
+  header("Location: ../../index.php");
+  exit();
+}
+
 // Definir tipo de perfil padrão
 $usuario['tipo_perfil'] = $usuario['tipo_perfil'] ?? 'Investor profile';
-$primeiro_nome = explode(' ', $usuario['nome'])[0];
+$primeiro_nome = !empty($usuario['nome']) ? explode(' ', $usuario['nome'])[0] : 'Usuário';
 
 // Buscar saldo
 $stmt = $conn->prepare("SELECT SUM(valor) as saldo FROM transacoes WHERE usuario_id = ?");

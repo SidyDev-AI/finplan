@@ -120,13 +120,13 @@ $totalMesFormatado = number_format($totalMes, 2, ',', '.');
   </div>
 
     <ul class="menu">
-      <li><a href="#"><i class="fas fa-th-large"></i> Dashboard</a></li>
+      <li><a href="dashboard.php"><i class="fas fa-th-large"></i> Dashboard</a></li>
       <li><a href="#"><i class="fas fa-wallet"></i> Budget</a></li>
       <li><a href="#"><i class="fas fa-chart-pie"></i> Categories</a></li>
       <li><a href="transactions.php" class="active"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
       <li><a href="#"><i class="fas fa-chart-bar"></i> Analytics</a></li>
       <li><a href="#"><i class="fas fa-credit-card"></i> Accounts</a></li>
-      <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+      <li><a href="perfil.php"><i class="fas fa-cog"></i> Settings</a></li>
       <li><a href="#"><i class="fas fa-question-circle"></i> Help</a></li>
       <li><a href="#"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
     </ul>
