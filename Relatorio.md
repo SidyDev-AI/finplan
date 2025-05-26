@@ -16,8 +16,8 @@
 | Tela e função para confirmação de conta                    | **RF002**               | Jose   | Lucas   |
 | Tela e função de recuperação de senha via e-mail           | **RF003**               | Jose   | Kawan   |
 | Tela e função para notificação                             | **RF004_notificação**   | Lucas  | Jose    |
-| Tela e função de visualizar transação                      | **RF005_visualizar**    | Kawan  | Lucas   |
-| Tela e função de cadastro de transação                     | **RF005_cadastrar**     | Jose   | Kawan   |
+| Tela e função de visualizar transação                      | **RF005_visualizar**    | Jose   | Lucas   |
+| Tela e função de cadastro de transação                     | **RF005_cadastrar**     | Kawan  | Borges  |
 | Tela e função de editar transação                          | **RF006_editar**        | Lucas  | Jose    |
 | Botão e função de excluir transação                        | **RF006_excluir**       | Thales | Kawan   |
 | Tela e função para mostrar gráficos de receitas e despesas | **RF007_grafdashboard** | Jose   | Lucas   | 
