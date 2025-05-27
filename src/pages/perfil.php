@@ -138,7 +138,7 @@ $data_atual = date("d-m-y H:i");
       <li><a href="#"><i class="fas fa-credit-card"></i> Accounts</a></li>
       <li><a href="#" class="active"><i class="fas fa-cog"></i> Settings</a></li>
       <li><a href="#"><i class="fas fa-question-circle"></i> Help</a></li>
-      <li><a href="#"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
+      <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
     </ul>
 
     <div class="theme-toggle">

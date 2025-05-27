@@ -124,23 +124,205 @@ while (count($meses_grafico) < 3) {
     array_unshift($saidas_grafico, 0);
 }
 
-// Buscar categorias de gastos do mês atual
+// Buscar categorias de gastos do mês atual - MELHORADA
 $stmt = $conn->prepare("
     SELECT 
         categoria,
-        SUM(valor) as total
+        SUM(valor) as total,
+        COUNT(*) as quantidade_transacoes,
+        tipo
     FROM transacoes 
     WHERE usuario_id = ? 
     AND tipo = 'Saida' 
     AND strftime('%Y-%m', data) = ?
     AND categoria IS NOT NULL
     AND categoria != ''
+    AND TRIM(categoria) != ''
     GROUP BY categoria
     ORDER BY total DESC
-    LIMIT 5
+    LIMIT 8
 ");
 $stmt->execute([$id, $mes_atual]);
 $categorias_gastos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Adicionar este código temporário logo após a consulta das categorias para debug:
+
+// DEBUG TEMPORÁRIO - remover depois
+echo "<!-- DEBUG: Total de transações de saída: " . ($debug_info['total_transacoes'] ?? 0) . " -->";
+echo "<!-- DEBUG: Transações com categoria: " . ($debug_info['com_categoria'] ?? 0) . " -->";
+echo "<!-- DEBUG: Mês atual: " . $mes_atual . " -->";
+echo "<!-- DEBUG: Categorias encontradas: " . count($categorias_gastos) . " -->";
+if (count($categorias_gastos) > 0) {
+    echo "<!-- DEBUG: Primeira categoria: " . $categorias_gastos[0]['categoria'] . " -->";
+}
+
+
+// Debug: verificar se há transações
+$stmt_debug = $conn->prepare("
+    SELECT COUNT(*) as total_transacoes, 
+           COUNT(CASE WHEN categoria IS NOT NULL AND categoria != '' THEN 1 END) as com_categoria
+    FROM transacoes 
+    WHERE usuario_id = ? AND tipo = 'Saida'
+");
+$stmt_debug->execute([$id]);
+$debug_info = $stmt_debug->fetch(PDO::FETCH_ASSOC);
+
+// Array expandido de ícones para categorias - incluindo valores exatos do transactions.php
+$icons = [
+    // Valores exatos do transactions.php
+    'alimentacao' => 'fas fa-utensils',
+    'divida' => 'fas fa-credit-card',
+    'emprestimo' => 'fas fa-hand-holding-usd',
+    'consorcio' => 'fas fa-handshake',
+    'aluguel' => 'fas fa-home',
+    'energia' => 'fas fa-bolt',
+    'internet' => 'fas fa-wifi',
+    'agua' => 'fas fa-tint',
+    'lazer' => 'fas fa-gamepad',
+    
+    // Variações com acentos e maiúsculas
+    'Alimentação' => 'fas fa-utensils',
+    'Dívida' => 'fas fa-credit-card',
+    'Empréstimo' => 'fas fa-hand-holding-usd',
+    'Consórcio' => 'fas fa-handshake',
+    'Aluguel' => 'fas fa-home',
+    'Energia' => 'fas fa-bolt',
+    'Internet' => 'fas fa-wifi',
+    'Água' => 'fas fa-tint',
+    'Lazer' => 'fas fa-gamepad',
+    
+    // Alimentação e Bebidas
+    'Comida' => 'fas fa-utensils',
+    'Restaurante' => 'fas fa-utensils',
+    'Supermercado' => 'fas fa-shopping-cart',
+    'Bebidas' => 'fas fa-coffee',
+    'Café' => 'fas fa-coffee',
+    'Lanche' => 'fas fa-hamburger',
+    
+    // Transporte
+    'Transporte' => 'fas fa-car',
+    'Combustível' => 'fas fa-gas-pump',
+    'Gasolina' => 'fas fa-gas-pump',
+    'Uber' => 'fas fa-taxi',
+    'Taxi' => 'fas fa-taxi',
+    'Ônibus' => 'fas fa-bus',
+    'Metro' => 'fas fa-subway',
+    'Estacionamento' => 'fas fa-parking',
+    
+    // Casa e Moradia
+    'Casa' => 'fas fa-home',
+    'Condomínio' => 'fas fa-building',
+    'Gás' => 'fas fa-fire',
+    'Telefone' => 'fas fa-phone',
+    'IPTU' => 'fas fa-file-invoice-dollar',
+    
+    // Saúde
+    'Saúde' => 'fas fa-heartbeat',
+    'Médico' => 'fas fa-user-md',
+    'Farmácia' => 'fas fa-pills',
+    'Dentista' => 'fas fa-tooth',
+    'Plano de Saúde' => 'fas fa-shield-alt',
+    'Academia' => 'fas fa-dumbbell',
+    
+    // Educação
+    'Educação' => 'fas fa-graduation-cap',
+    'Escola' => 'fas fa-school',
+    'Curso' => 'fas fa-book',
+    'Livros' => 'fas fa-book-open',
+    'Material Escolar' => 'fas fa-pencil-alt',
+    
+    // Lazer e Entretenimento
+    'Cinema' => 'fas fa-film',
+    'Teatro' => 'fas fa-theater-masks',
+    'Viagem' => 'fas fa-plane',
+    'Hotel' => 'fas fa-bed',
+    'Festa' => 'fas fa-birthday-cake',
+    'Jogos' => 'fas fa-gamepad',
+    'Streaming' => 'fas fa-play-circle',
+    'Netflix' => 'fas fa-play-circle',
+    'Spotify' => 'fas fa-music',
+    
+    // Roupas e Beleza
+    'Roupas' => 'fas fa-tshirt',
+    'Calçados' => 'fas fa-shoe-prints',
+    'Beleza' => 'fas fa-cut',
+    'Cabelo' => 'fas fa-cut',
+    'Cosméticos' => 'fas fa-palette',
+    
+    // Finanças
+    'Banco' => 'fas fa-university',
+    'Cartão' => 'fas fa-credit-card',
+    'Investimento' => 'fas fa-chart-line',
+    'Seguro' => 'fas fa-shield-alt',
+    'Taxa' => 'fas fa-receipt',
+    
+    // Trabalho
+    'Trabalho' => 'fas fa-briefcase',
+    'Material de Trabalho' => 'fas fa-laptop',
+    'Transporte Trabalho' => 'fas fa-subway',
+    
+    // Pets
+    'Pet' => 'fas fa-paw',
+    'Veterinário' => 'fas fa-paw',
+    'Ração' => 'fas fa-bone',
+    
+    // Doações e Presentes
+    'Presente' => 'fas fa-gift',
+    'Doação' => 'fas fa-hand-holding-heart',
+    'Caridade' => 'fas fa-hands-helping',
+    
+    // Outros
+    'Outros' => 'fas fa-ellipsis-h',
+    'Diversos' => 'fas fa-list',
+    'Emergência' => 'fas fa-exclamation-triangle',
+    'Manutenção' => 'fas fa-tools',
+    'Limpeza' => 'fas fa-broom',
+    'Eletrônicos' => 'fas fa-mobile-alt',
+    'Móveis' => 'fas fa-couch',
+    'Decoração' => 'fas fa-paint-brush'
+];
+
+// Função para normalizar nome da categoria para busca do ícone - MELHORADA
+function buscarIconeCategoria($categoria, $icons) {
+    // Primeiro, tenta busca exata
+    if (isset($icons[$categoria])) {
+        return $icons[$categoria];
+    }
+    
+    // Tenta busca exata em minúsculas
+    $categoria_lower = strtolower($categoria);
+    if (isset($icons[$categoria_lower])) {
+        return $icons[$categoria_lower];
+    }
+    
+    // Busca por palavras-chave na categoria
+    foreach ($icons as $key => $icon) {
+        $key_lower = strtolower($key);
+        if (strpos($categoria_lower, $key_lower) !== false || strpos($key_lower, $categoria_lower) !== false) {
+            return $icon;
+        }
+    }
+    
+    // Mapeamento específico para valores do transactions.php
+    $mapeamento_especifico = [
+        'alimentacao' => 'fas fa-utensils',
+        'divida' => 'fas fa-credit-card',
+        'emprestimo' => 'fas fa-hand-holding-usd',
+        'consorcio' => 'fas fa-handshake',
+        'aluguel' => 'fas fa-home',
+        'energia' => 'fas fa-bolt',
+        'internet' => 'fas fa-wifi',
+        'agua' => 'fas fa-tint',
+        'lazer' => 'fas fa-gamepad'
+    ];
+    
+    if (isset($mapeamento_especifico[$categoria_lower])) {
+        return $mapeamento_especifico[$categoria_lower];
+    }
+    
+    // Ícone padrão se não encontrar
+    return 'fas fa-shopping-cart';
+}
 
 // Buscar dados para contas (últimos 30 dias)
 $stmt = $conn->prepare("
@@ -153,22 +335,27 @@ $stmt = $conn->prepare("
 $stmt->execute([$id]);
 $conta_corrente = $stmt->fetchColumn() ?? 0;
 
+// Calcular saldo do mês
+$saldo_mes = $entradas_mes - $saidas_mes;
+
+// Percentuais: tudo em Balance
+$perc_investment = 0;
+$perc_goals = 0;
+$perc_balance = 100; // 100% concentrado no Balance
+
 // Calcular percentuais para o gráfico de rosca
-$total_absoluto = abs($entradas_mes) + abs($saidas_mes);
+$total_absoluto = abs($entradas_mes) + abs($saidas_mes);  // <- soma absoluta correta
+
 if ($total_absoluto > 0) {
-    $perc_balance = round((abs($saldo_mes) / $total_absoluto) * 100);
-    $perc_investment = round((abs($entradas_mes) * 0.3 / $total_absoluto) * 100); // 30% das entradas como investimento
-    $perc_goals = 100 - $perc_balance - $perc_investment;
-    
-    // Garantir que os percentuais sejam positivos
-    $perc_balance = max(0, $perc_balance);
-    $perc_investment = max(0, $perc_investment);
-    $perc_goals = max(0, $perc_goals);
+    $perc_balance = 100;   // Tudo concentrado no saldo
+    $perc_investment = 0;  // Zerado
+    $perc_goals = 0;       // Zerado
 } else {
-    $perc_balance = 55;
-    $perc_investment = 30;
-    $perc_goals = 15;
+    $perc_balance = 100;   // Mantém 100% mesmo sem movimentações
+    $perc_investment = 0;
+    $perc_goals = 0;
 }
+
 
 // Buscar notificações não lidas
 $sql_notificacoes = "SELECT * FROM notificacoes WHERE usuario_id = ? AND lida = 0 ORDER BY data_criacao DESC LIMIT 3";
@@ -532,39 +719,47 @@ $data_atual = date("d-m-y H:i");
             <!-- Dashboard Content -->
             <div class="dashboard">
                 <!-- Balance Accounts Section -->
-                <div class="card balance-accounts">
-                    <h2>Balance Accounts</h2>
-                    <div class="accounts-container">
-                        <div class="account-card">
-                            <div class="account-icon dollar">
-                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
-                                    <line x1="12" y1="1" x2="12" y2="23"></line>
-                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                                </svg>
-                            </div>
-                            <div class="account-balance">R$ <?php echo number_format($conta_corrente, 2, ',', '.'); ?></div>
-                        </div>
-                        <div class="account-card">
-                            <div class="account-icon credit-card">
-                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
-                                    <rect width="20" height="14" x="2" y="5" rx="2"></rect>
-                                    <line x1="2" x2="22" y1="10" y2="10"></line>
-                                </svg>
-                            </div>
-                            <div class="account-balance">R$ <?php echo number_format($entradas_mes * 0.7, 2, ',', '.'); ?></div>
-                        </div>
-                        <div class="account-card">
-                            <div class="account-icon piggy-bank">
-                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
-                                    <path d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2h0V5z"></path>
-                                    <path d="M2 9v1c0 1.1.9 2 2 2h1"></path>
-                                    <path d="M16 11h0"></path>
-                                </svg>
-                            </div>
-                            <div class="account-balance">R$ <?php echo number_format($entradas_mes * 0.3, 2, ',', '.'); ?></div>
-                        </div>
-                    </div>
-                </div>
+<div class="card balance-accounts">
+    <h2>Balance Accounts</h2>
+    <div class="accounts-container">
+        <!-- Conta principal (saldo real) -->
+        <div class="account-card">
+            <div class="account-icon dollar">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+            </div>
+            <div class="account-balance">
+                R$ <?php echo number_format($saldo_mes, 2, ',', '.'); ?>
+            </div>
+        </div>
+
+        <!-- Conta crédito (zerada até implementar Investment) -->
+        <div class="account-card">
+            <div class="account-icon credit-card">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                    <rect width="20" height="14" x="2" y="5" rx="2"></rect>
+                    <line x1="2" x2="22" y1="10" y2="10"></line>
+                </svg>
+            </div>
+            <div class="account-balance">R$ 0,00</div>
+        </div>
+
+        <!-- Poupança/cofrinho (zerado até implementar Goals) -->
+        <div class="account-card">
+            <div class="account-icon piggy-bank">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                    <path d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2h0V5z"></path>
+                    <path d="M2 9v1c0 1.1.9 2 2 2h1"></path>
+                    <path d="M16 11h0"></path>
+                </svg>
+            </div>
+            <div class="account-balance">R$ 0,00</div>
+        </div>
+    </div>
+</div>
+
                 
                 <!-- Statistics Section -->
                 <div class="statistics">
@@ -591,102 +786,117 @@ $data_atual = date("d-m-y H:i");
                     </div>
                     
                     <div class="statistics-content">
-                        <!-- Gráfico de rosca -->
-                        <div class="chart-container">
-                            <canvas id="doughnutChart"></canvas>
-                            <div class="chart-center-text">Total balance<br>R$ <?php echo number_format($saldo_mes, 0, ',', '.'); ?></div>
-                        </div>
-                        
-                        <!-- Barras de progresso -->
-                        <div class="progress-bars">
-                            <!-- Barra de Balance -->
-                            <div class="progress-item">
-                                <div class="progress-icon dollar">$</div>
-                                <div class="progress-info">
-                                    <div class="progress-label">Balance (R$ <?php echo number_format($saldo_mes, 2, ',', '.'); ?>)</div>
-                                    <div class="progress-bar-container">
-                                        <div class="progress-bar-fill balance"></div>
-                                    </div>
-                                </div>
-                                <div class="progress-percentage"><?php echo $perc_balance; ?>%</div>
-                            </div>
-                            
-                            <!-- Barra de Investment -->
-                            <div class="progress-item">
-                                <div class="progress-icon investment">
-                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
-                                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-                                    </svg>
-                                </div>
-                                <div class="progress-info">
-                                    <div class="progress-label">Investment (R$ <?php echo number_format($entradas_mes * 0.3, 2, ',', '.'); ?>)</div>
-                                    <div class="progress-bar-container">
-                                        <div class="progress-bar-fill investment"></div>
-                                    </div>
-                                </div>
-                                <div class="progress-percentage"><?php echo $perc_investment; ?>%</div>
-                            </div>
-                            
-                            <!-- Barra de Goals -->
-                            <div class="progress-item">
-                                <div class="progress-icon goals">
-                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
-                                        <circle cx="12" cy="12" r="10"></circle>
-                                        <circle cx="12" cy="12" r="6"></circle>
-                                        <circle cx="12" cy="12" r="2"></circle>
-                                    </svg>
-                                </div>
-                                <div class="progress-info">
-                                    <div class="progress-label">Goals (R$ <?php echo number_format($saidas_mes * 0.2, 2, ',', '.'); ?>)</div>
-                                    <div class="progress-bar-container">
-                                        <div class="progress-bar-fill goals"></div>
-                                    </div>
-                                </div>
-                                <div class="progress-percentage"><?php echo $perc_goals; ?>%</div>
-                            </div>
-                        </div>
-                    </div>
+    <!-- Gráfico de rosca -->
+    <div class="chart-container">
+    <canvas id="doughnutChart"></canvas>
+    <div class="chart-center-text">
+        Total balance<br>R$ <?php echo number_format($saldo_mes, 0, ',', '.'); ?>
+    </div>
+</div>
+
+<!-- Barras de progresso -->
+<div class="progress-bars">
+    <!-- Barra de Balance -->
+    <div class="progress-item">
+        <div class="progress-icon dollar">$</div>
+        <div class="progress-info">
+            <div class="progress-label">Balance (R$ <?php echo number_format($saldo_mes, 2, ',', '.'); ?>)</div>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill balance" style="width: <?php echo $perc_balance; ?>%;"></div>
+            </div>
+        </div>
+        <div class="progress-percentage"><?php echo $perc_balance; ?>%</div>
+    </div>
+        
+        <!-- Barra de Investment -->
+    <div class="progress-item">
+        <div class="progress-icon investment">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+            </svg>
+        </div>
+        <div class="progress-info">
+            <div class="progress-label">Investment (R$ 0,00)</div>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill investment" style="width: 0%;"></div>
+            </div>
+        </div>
+        <div class="progress-percentage">0%</div>
+    </div>
+        
+        <!-- Barra de Goals -->
+        <div class="progress-item">
+            <div class="progress-icon goals">
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <circle cx="12" cy="12" r="6"></circle>
+                    <circle cx="12" cy="12" r="2"></circle>
+                </svg>
+            </div>
+            <div class="progress-info">
+                <div class="progress-label">Goals (R$ 0,00)</div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill goals" style="width: 0%;"></div>
+                </div>
+            </div>
+            <div class="progress-percentage">0%</div>
+        </div>
+    </div>
+</div>
                 </div>
                 
                 <!-- Bottom Section -->
                 <div class="bottom-section">
                     <!-- Popular Expense Categories -->
-                    <div class="card expense-categories">
-                        <h2>Popular Expense Categories</h2>
-                        <ul class="category-list">
-                            <?php if (count($categorias_gastos) > 0): ?>
-                                <?php 
-                                $icons = [
-                                    'Alimentação' => 'fas fa-utensils',
-                                    'Transporte' => 'fas fa-car',
-                                    'Lazer' => 'fas fa-gamepad',
-                                    'Saúde' => 'fas fa-heartbeat',
-                                    'Educação' => 'fas fa-graduation-cap',
-                                    'Casa' => 'fas fa-home',
-                                    'Roupas' => 'fas fa-tshirt',
-                                    'Outros' => 'fas fa-shopping-cart'
-                                ];
-                                ?>
-                                <?php foreach ($categorias_gastos as $categoria): ?>
-                                    <li class="category-item">
-                                        <div class="category-icon supermarket">
-                                            <i class="<?php echo $icons[$categoria['categoria']] ?? 'fas fa-shopping-cart'; ?>"></i>
-                                        </div>
-                                        <div class="category-name"><?php echo htmlspecialchars($categoria['categoria']); ?></div>
-                                        <div class="category-amount">R$ <?php echo number_format($categoria['total'], 2, ',', '.'); ?></div>
-                                    </li>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <li class="category-item">
-                                    <div class="category-icon supermarket">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </div>
-                                    <div class="category-name">Nenhuma transação</div>
-                                    <div class="category-amount">R$ 0,00</div>
-                                </li>
-                            <?php endif; ?>
-                        </ul>
+                    
+<!-- Popular Expense Categories -->
+<div class="card expense-categories">
+    <h2>Popular Expense Categories</h2>
+    <ul class="category-list">
+        <?php if (count($categorias_gastos) > 0): ?>
+            <?php foreach ($categorias_gastos as $categoria): ?>
+                <?php 
+                $icone_categoria = buscarIconeCategoria($categoria['categoria'], $icons);
+                $porcentagem_uso = round(($categoria['quantidade_transacoes'] / array_sum(array_column($categorias_gastos, 'quantidade_transacoes'))) * 100, 1);
+                ?>
+                <li class="category-item">
+                    <div class="category-icon" title="<?php echo htmlspecialchars($categoria['categoria']); ?>">
+                        <i class="<?php echo $icone_categoria; ?>"></i>
                     </div>
+                    <div class="category-info">
+                        <div class="category-name"><?php echo htmlspecialchars($categoria['categoria']); ?></div>
+                        <div class="category-usage"><?php echo $categoria['quantidade_transacoes']; ?> transações (<?php echo $porcentagem_uso; ?>%)</div>
+                    </div>
+                    <div class="category-amount">R$ <?php echo number_format($categoria['total'], 2, ',', '.'); ?></div>
+                </li>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <li class="category-item no-data">
+                <div class="category-icon">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <div class="category-info">
+                    <div class="category-name">Nenhuma categoria encontrada</div>
+                    <div class="category-usage">Cadastre transações para ver suas categorias populares</div>
+                </div>
+                <div class="category-amount">R$ 0,00</div>
+            </li>
+        <?php endif; ?>
+    </ul>
+    
+    <?php if (count($categorias_gastos) > 0): ?>
+        <div class="category-summary">
+            <div class="summary-item">
+                <span class="summary-label">Total de categorias:</span>
+                <span class="summary-value"><?php echo count($categorias_gastos); ?></span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Gasto total:</span>
+                <span class="summary-value">R$ <?php echo number_format(array_sum(array_column($categorias_gastos, 'total')), 2, ',', '.'); ?></span>
+            </div>
+        </div>
+    <?php endif; ?>
+</div>
                     
                     <!-- Goals and Progress -->
                     <div class="card goals-progress">

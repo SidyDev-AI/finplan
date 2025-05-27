@@ -551,54 +551,160 @@ h2 {
 /* Category items melhorados */
 .category-list {
   list-style: none;
+  max-height: 280px;
+  overflow-y: auto;
 }
 
 .category-item {
   display: flex;
   align-items: center;
-  padding: 15px 0;
+  padding: 12px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background-color 0.2s ease;
+}
+
+.category-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 .category-item:last-child {
   border-bottom: none;
 }
 
-.category-icon {
-  width: 35px;
+.category-item.no-data {
+  padding: 20px 0;
   text-align: center;
-  font-size: 18px;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.category-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
   margin-right: 15px;
+  font-size: 18px;
+  transition: transform 0.2s ease;
 }
 
-.category-icon.supermarket {
-  color: #03a9f4;
+.category-item:hover .category-icon {
+  transform: scale(1.1);
 }
 
-.category-icon.shopping {
-  color: #9c27b0;
-}
-
-.category-icon.transport {
-  color: #cddc39;
-}
-
-.category-icon.entertainment {
-  color: #f44336;
-}
-
-.category-icon.games {
-  color: #3f51b5;
+.category-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .category-name {
-  flex: 1;
   font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.category-usage {
+  font-size: 11px;
+  color: #b0b0b0;
+  font-style: italic;
 }
 
 .category-amount {
   font-weight: 600;
   font-size: 14px;
+  color: #279e8e;
+  text-align: right;
+  min-width: 80px;
+}
+
+.category-summary {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.summary-label {
+  font-size: 11px;
+  color: #b0b0b0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.summary-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: #279e8e;
+}
+
+/* Ícones específicos por categoria */
+.category-icon i.fa-utensils {
+  color: #ff6b6b;
+}
+.category-icon i.fa-car {
+  color: #4ecdc4;
+}
+.category-icon i.fa-home {
+  color: #45b7d1;
+}
+.category-icon i.fa-heartbeat {
+  color: #96ceb4;
+}
+.category-icon i.fa-graduation-cap {
+  color: #feca57;
+}
+.category-icon i.fa-gamepad {
+  color: #ff9ff3;
+}
+.category-icon i.fa-shopping-cart {
+  color: #54a0ff;
+}
+.category-icon i.fa-wifi {
+  color: #5f27cd;
+}
+.category-icon i.fa-bolt {
+  color: #ffd700;
+}
+.category-icon i.fa-tint {
+  color: #00d2d3;
+}
+.category-icon i.fa-gas-pump {
+  color: #ff6348;
+}
+.category-icon i.fa-pills {
+  color: #2ed573;
+}
+.category-icon i.fa-film {
+  color: #ff4757;
+}
+.category-icon i.fa-tshirt {
+  color: #3742fa;
+}
+.category-icon i.fa-paw {
+  color: #ff9f43;
+}
+.category-icon i.fa-gift {
+  color: #ee5a52;
+}
+.category-icon i.fa-tools {
+  color: #808080;
 }
 
 /* Goal items melhorados */
@@ -928,6 +1034,43 @@ body.light-theme .show-all-btn {
 
 body.light-theme .show-all-btn:hover {
   background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Tema claro para categorias */
+body.light-theme .category-item {
+  border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .category-item:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+body.light-theme .category-icon {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .category-name {
+  color: #333333;
+}
+
+body.light-theme .category-usage {
+  color: #666666;
+}
+
+body.light-theme .category-amount {
+  color: #279e8e;
+}
+
+body.light-theme .summary-label {
+  color: #666666;
+}
+
+body.light-theme .summary-value {
+  color: #279e8e;
+}
+
+body.light-theme .category-summary {
+  border-top-color: rgba(0, 0, 0, 0.1);
 }
 
 /* Responsividade ajustada */
