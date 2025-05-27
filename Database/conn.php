@@ -34,9 +34,8 @@ function conectarBanco() {
       parcelamento TEXT CHECK (parcelamento IN ('yes', 'no')) NOT NULL,
       qtd_parcelas INTEGER DEFAULT 1,
       criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+      FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
     )";
-
 
     // Tabela de notificações
     $sqlNotificacoes = "CREATE TABLE IF NOT EXISTS notificacoes (

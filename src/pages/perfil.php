@@ -57,9 +57,17 @@ $stmt = $conn->prepare("SELECT nome, email, cpf FROM usuarios WHERE id = ?");
 $stmt->execute([$id]);
 $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
+if (!$usuario) {
+  // Usuário não encontrado
+  $_SESSION = [];
+  session_destroy();
+  header("Location: ../../index.php");
+  exit();
+}
+
 // Definir tipo de perfil padrão
 $usuario['tipo_perfil'] = $usuario['tipo_perfil'] ?? 'Investor profile';
-$primeiro_nome = explode(' ', $usuario['nome'])[0];
+$primeiro_nome = !empty($usuario['nome']) ? explode(' ', $usuario['nome'])[0] : 'Usuário';
 
 // Buscar saldo
 $stmt = $conn->prepare("SELECT SUM(valor) as saldo FROM transacoes WHERE usuario_id = ?");
@@ -130,7 +138,7 @@ $data_atual = date("d-m-y H:i");
       <li><a href="#"><i class="fas fa-credit-card"></i> Accounts</a></li>
       <li><a href="#" class="active"><i class="fas fa-cog"></i> Settings</a></li>
       <li><a href="#"><i class="fas fa-question-circle"></i> Help</a></li>
-      <li><a href="#"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
+      <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
     </ul>
 
     <div class="theme-toggle">
