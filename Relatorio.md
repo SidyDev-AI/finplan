@@ -23,7 +23,7 @@
 | Tela e função para mostrar gráficos de receitas e despesas | **RF007_grafdashboard** | Jose   | Lucas   | 
 | Função de geração de gráficos de receitas e despesas       | **RF007_grafdashboard** | Lucas  | Thales  |
 | Tela e função para o usuário inserir metas e progressos    | **RF007_metas**         | Kawan  | Jose    |
-| Tela e função para o usuário inserir metas e progressos    | **RF007_metas**         | Lucas  | Kawan   |
+| Tela e função para o usuário inserir metas e progressos    | **RF007_metas**         | José   | Lucas   |
 | Tela e função para a visualização saldo atual do usuário   | **RF007_saldo**         | Kawan  | Jose    |
 
 ----

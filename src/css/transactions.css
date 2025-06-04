@@ -213,6 +213,7 @@
 
 .content-transactions {
   max-height: 450px;
+  height: 450px;
   overflow-y: auto;
   overflow-x: hidden;
 }

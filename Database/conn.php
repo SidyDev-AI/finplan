@@ -37,6 +37,19 @@ function conectarBanco() {
       FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
     )";
 
+    // Tabela de Metas
+    $sqlMetas = "CREATE TABLE IF NOT EXISTS metas (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      usuario_id INTEGER NOT NULL,
+      titulo TEXT NOT NULL,
+      valor REAL NOT NULL,
+      valor_atual REAL DEFAULT 150,
+      data_inicial TEXT NOT NULL,
+      data_final TEXT NOT NULL,
+      descricao TEXT NOT NULL,
+      FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+    )";
+
     // Tabela de notificações
     $sqlNotificacoes = "CREATE TABLE IF NOT EXISTS notificacoes (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -53,6 +66,7 @@ function conectarBanco() {
     // Criação das tabelas
     $pdo->exec($sqlUsuarios);
     $pdo->exec($sqlTransacoes);
+    $pdo->exec($sqlMetas);
     $pdo->exec($sqlNotificacoes);
 
     return $pdo;
