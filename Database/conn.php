@@ -76,5 +76,43 @@ function conectarBanco() {
   }
 }
 
+// ✅ Função de resumo financeiro: Entradas, Saídas e Saldo do mês atual
+function calcularResumoFinanceiro($pdo, $usuario_id) {
+    $resumo = [
+        'saldo_total' => 0,
+        'entradas_mes' => 0,
+        'saidas_mes' => 0,
+        'saldo_mes' => 0
+    ];
+
+    $mes_atual = date('Y-m');
+    $stmt = $pdo->prepare("
+        SELECT 
+            SUM(CASE WHEN tipo = 'Entrada' THEN valor ELSE -valor END) AS saldo_total
+        FROM transacoes 
+        WHERE usuario_id = ?
+    ");
+    $stmt->execute([$usuario_id]);
+    $resumo['saldo_total'] = $stmt->fetchColumn() ?? 0;
+
+    $stmt = $pdo->prepare("
+        SELECT 
+            SUM(CASE WHEN tipo = 'Entrada' THEN valor ELSE 0 END) AS entradas_mes,
+            SUM(CASE WHEN tipo = 'Saida' THEN valor ELSE 0 END) AS saidas_mes,
+            SUM(CASE WHEN tipo = 'Entrada' THEN valor ELSE -valor END) AS saldo_mes
+        FROM transacoes 
+        WHERE usuario_id = ? AND strftime('%Y-%m', data) = ?
+    ");
+    $stmt->execute([$usuario_id, $mes_atual]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $resumo['entradas_mes'] = $result['entradas_mes'] ?? 0;
+    $resumo['saidas_mes'] = $result['saidas_mes'] ?? 0;
+    $resumo['saldo_mes'] = $result['saldo_mes'] ?? 0;
+
+    return $resumo;
+}
+
+
 return conectarBanco();
 ?>
