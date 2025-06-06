@@ -38,7 +38,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['marcar_lida']) && !is
     $nome  = $_POST['nome'];
     $email = $_POST['email'];
     $senha = (!empty($_POST['senha']) && $_POST['senha'] !== '********') ? password_hash($_POST['senha'], PASSWORD_DEFAULT) : null;
-    $cpf   = $_POST['cpf'];
+    $cpf = !empty($_POST['cpf']) ? $_POST['cpf'] : null;
+
 
     if ($senha) {
       $stmt = $conn->prepare("UPDATE usuarios SET nome = ?, email = ?, senha = ?, cpf = ? WHERE id = ?");
@@ -131,7 +132,7 @@ $data_atual = date("d-m-y H:i");
 
     <ul class="menu">
       <li><a href="dashboard.php"><i class="fas fa-th-large"></i> Dashboard</a></li>
-      <li><a href="#"><i class="fas fa-wallet"></i> Budget</a></li>
+      <li><a href="metas.php"><i class="fas fa-wallet"></i> Goals</a></li>
       <li><a href="#"><i class="fas fa-chart-pie"></i> Categories</a></li>
       <li><a href="transactions.php"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
       <li><a href="#"><i class="fas fa-chart-bar"></i> Analytics</a></li>
@@ -243,7 +244,8 @@ $data_atual = date("d-m-y H:i");
             </div>
             <div class="form-field">
               <i class="fas fa-credit-card"></i>
-              <input type="text" name="cpf" id="cpfInput" placeholder="CPF" value="<?= htmlspecialchars($usuario['cpf']) ?>" readonly>
+              <?php $cpf_formatado = isset($usuario['cpf']) && !empty($usuario['cpf']) ? htmlspecialchars($usuario['cpf']) : ''; ?>
+              <input type="text" name="cpf" id="cpfInput" placeholder="CPF" value="<?= $cpf_formatado ?>" readonly>
             </div>
 
             <div class="delete-button-container">
@@ -274,7 +276,7 @@ $data_atual = date("d-m-y H:i");
       nome: '<?= htmlspecialchars($usuario['nome']) ?>',
       email: '<?= htmlspecialchars($usuario['email']) ?>',
       senha: '********',
-      cpf: '<?= htmlspecialchars($usuario['cpf']) ?>'
+      cpf: '<?= isset($usuario['cpf']) && !empty($usuario['cpf']) ? htmlspecialchars($usuario['cpf']) : '' ?>'
     };
 
     document.getElementById('togglePassword').addEventListener('click', function() {

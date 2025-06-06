@@ -1,6 +1,7 @@
 <?php
 session_start();
 $conn = require_once __DIR__ . '/../../Database/conn.php';
+require_once __DIR__ . '/../backend/icones_categorias.php'; // ⬅️ Inclusão do novo arquivo
 
 // Verifica se o usuário está logado
 if (!isset($_SESSION['usuario_id'])) {
@@ -29,54 +30,30 @@ if (isset($_POST['excluir_notificacao'])) {
 $stmt = $conn->prepare("SELECT nome FROM usuarios WHERE id = ?");
 $stmt->execute([$id]);
 $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
-
-// Extrair primeiro nome
 $primeiro_nome = $usuario && isset($usuario['nome']) ? explode(' ', $usuario['nome'])[0] : 'Usuário';
 
-// ===== INTEGRAÇÃO COM TRANSAÇÕES =====
+// ✅ Usar função centralizada do conn.php
+$resumoFinanceiro = calcularResumoFinanceiro($conn, $id);
 
-// Buscar saldo total geral (baseado na lógica do transactions.php)
-$stmt = $conn->prepare("
-    SELECT 
-        SUM(CASE WHEN tipo = 'Entrada' THEN valor ELSE -valor END) AS saldo_total
-    FROM transacoes 
-    WHERE usuario_id = ?
-");
-$stmt->execute([$id]);
-$saldo_total = $stmt->fetchColumn() ?? 0;
+// Garantir que os índices existam
+$saldo_total    = $resumoFinanceiro['saldo_total'] ?? 0;
+$entradas_mes   = $resumoFinanceiro['entradas_mes'] ?? 0;
+$saidas_mes     = $resumoFinanceiro['saidas_mes'] ?? 0;
+$saldo_mes      = $resumoFinanceiro['saldo_mes'] ?? 0;
+$saldo_mes_anterior = $resumoFinanceiro['saldo_mes_anterior'] ?? 0;
+
 $saldo_formatado = number_format($saldo_total, 2, ',', '.');
-
-// Buscar dados do mês atual
-$mes_atual = date('Y-m');
-$stmt = $conn->prepare("
-    SELECT 
-        SUM(CASE WHEN tipo = 'Entrada' THEN valor ELSE 0 END) AS entradas_mes,
-        SUM(CASE WHEN tipo = 'Saida' THEN valor ELSE 0 END) AS saidas_mes,
-        SUM(CASE WHEN tipo = 'Entrada' THEN valor ELSE -valor END) AS saldo_mes
-    FROM transacoes 
-    WHERE usuario_id = ? AND strftime('%Y-%m', data) = ?
-");
-$stmt->execute([$id, $mes_atual]);
-$dados_mes = $stmt->fetch(PDO::FETCH_ASSOC);
-
-$entradas_mes = $dados_mes['entradas_mes'] ?? 0;
-$saidas_mes = $dados_mes['saidas_mes'] ?? 0;
-$saldo_mes = $dados_mes['saldo_mes'] ?? 0;
-
-// Calcular variação (comparando com mês anterior)
-$mes_anterior = date('Y-m', strtotime('-1 month'));
-$stmt = $conn->prepare("
-    SELECT SUM(CASE WHEN tipo = 'Entrada' THEN valor ELSE -valor END) AS saldo_mes_anterior
-    FROM transacoes 
-    WHERE usuario_id = ? AND strftime('%Y-%m', data) = ?
-");
-$stmt->execute([$id, $mes_anterior]);
-$saldo_mes_anterior = $stmt->fetchColumn() ?? 0;
-
 $variacao = $saldo_mes - $saldo_mes_anterior;
 $variacao_positiva = $variacao >= 0;
 
-// Buscar dados dos últimos 3 meses para o gráfico comparativo
+// Gráfico de rosca (percentuais fixos por enquanto)
+$total_absoluto = abs($entradas_mes) + abs($saidas_mes);
+$perc_balance = 100;
+$perc_investment = 0;
+$perc_goals = 0;
+
+// Gráfico comparativo últimos 3 meses
+$mes_atual = date('Y-m');
 $stmt = $conn->prepare("
     SELECT 
         strftime('%Y-%m', data) as mes,
@@ -106,7 +83,7 @@ $stmt = $conn->prepare("
 $stmt->execute([$id]);
 $dados_grafico = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Preparar dados para o JavaScript
+// Preparar dados para JS
 $meses_grafico = [];
 $entradas_grafico = [];
 $saidas_grafico = [];
@@ -117,14 +94,13 @@ foreach ($dados_grafico as $dado) {
     $saidas_grafico[] = floatval($dado['saidas']);
 }
 
-// Se não tiver 3 meses, preencher com dados padrão
 while (count($meses_grafico) < 3) {
     array_unshift($meses_grafico, 'MÊS');
     array_unshift($entradas_grafico, 0);
     array_unshift($saidas_grafico, 0);
 }
 
-// Buscar categorias de gastos do mês atual - MELHORADA
+// Buscar categorias de gastos do mês atual
 $stmt = $conn->prepare("
     SELECT 
         categoria,
@@ -135,9 +111,7 @@ $stmt = $conn->prepare("
     WHERE usuario_id = ? 
     AND tipo = 'Saida' 
     AND strftime('%Y-%m', data) = ?
-    AND categoria IS NOT NULL
-    AND categoria != ''
-    AND TRIM(categoria) != ''
+    AND categoria IS NOT NULL AND categoria != '' AND TRIM(categoria) != ''
     GROUP BY categoria
     ORDER BY total DESC
     LIMIT 8
@@ -145,231 +119,17 @@ $stmt = $conn->prepare("
 $stmt->execute([$id, $mes_atual]);
 $categorias_gastos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Adicionar este código temporário logo após a consulta das categorias para debug:
-
-// DEBUG TEMPORÁRIO - remover depois
-echo "<!-- DEBUG: Total de transações de saída: " . ($debug_info['total_transacoes'] ?? 0) . " -->";
-echo "<!-- DEBUG: Transações com categoria: " . ($debug_info['com_categoria'] ?? 0) . " -->";
-echo "<!-- DEBUG: Mês atual: " . $mes_atual . " -->";
-echo "<!-- DEBUG: Categorias encontradas: " . count($categorias_gastos) . " -->";
-if (count($categorias_gastos) > 0) {
-    echo "<!-- DEBUG: Primeira categoria: " . $categorias_gastos[0]['categoria'] . " -->";
-}
-
-
-// Debug: verificar se há transações
-$stmt_debug = $conn->prepare("
-    SELECT COUNT(*) as total_transacoes, 
-           COUNT(CASE WHEN categoria IS NOT NULL AND categoria != '' THEN 1 END) as com_categoria
-    FROM transacoes 
-    WHERE usuario_id = ? AND tipo = 'Saida'
-");
-$stmt_debug->execute([$id]);
-$debug_info = $stmt_debug->fetch(PDO::FETCH_ASSOC);
-
-// Array expandido de ícones para categorias - incluindo valores exatos do transactions.php
-$icons = [
-    // Valores exatos do transactions.php
-    'alimentacao' => 'fas fa-utensils',
-    'divida' => 'fas fa-credit-card',
-    'emprestimo' => 'fas fa-hand-holding-usd',
-    'consorcio' => 'fas fa-handshake',
-    'aluguel' => 'fas fa-home',
-    'energia' => 'fas fa-bolt',
-    'internet' => 'fas fa-wifi',
-    'agua' => 'fas fa-tint',
-    'lazer' => 'fas fa-gamepad',
-    
-    // Variações com acentos e maiúsculas
-    'Alimentação' => 'fas fa-utensils',
-    'Dívida' => 'fas fa-credit-card',
-    'Empréstimo' => 'fas fa-hand-holding-usd',
-    'Consórcio' => 'fas fa-handshake',
-    'Aluguel' => 'fas fa-home',
-    'Energia' => 'fas fa-bolt',
-    'Internet' => 'fas fa-wifi',
-    'Água' => 'fas fa-tint',
-    'Lazer' => 'fas fa-gamepad',
-    
-    // Alimentação e Bebidas
-    'Comida' => 'fas fa-utensils',
-    'Restaurante' => 'fas fa-utensils',
-    'Supermercado' => 'fas fa-shopping-cart',
-    'Bebidas' => 'fas fa-coffee',
-    'Café' => 'fas fa-coffee',
-    'Lanche' => 'fas fa-hamburger',
-    
-    // Transporte
-    'Transporte' => 'fas fa-car',
-    'Combustível' => 'fas fa-gas-pump',
-    'Gasolina' => 'fas fa-gas-pump',
-    'Uber' => 'fas fa-taxi',
-    'Taxi' => 'fas fa-taxi',
-    'Ônibus' => 'fas fa-bus',
-    'Metro' => 'fas fa-subway',
-    'Estacionamento' => 'fas fa-parking',
-    
-    // Casa e Moradia
-    'Casa' => 'fas fa-home',
-    'Condomínio' => 'fas fa-building',
-    'Gás' => 'fas fa-fire',
-    'Telefone' => 'fas fa-phone',
-    'IPTU' => 'fas fa-file-invoice-dollar',
-    
-    // Saúde
-    'Saúde' => 'fas fa-heartbeat',
-    'Médico' => 'fas fa-user-md',
-    'Farmácia' => 'fas fa-pills',
-    'Dentista' => 'fas fa-tooth',
-    'Plano de Saúde' => 'fas fa-shield-alt',
-    'Academia' => 'fas fa-dumbbell',
-    
-    // Educação
-    'Educação' => 'fas fa-graduation-cap',
-    'Escola' => 'fas fa-school',
-    'Curso' => 'fas fa-book',
-    'Livros' => 'fas fa-book-open',
-    'Material Escolar' => 'fas fa-pencil-alt',
-    
-    // Lazer e Entretenimento
-    'Cinema' => 'fas fa-film',
-    'Teatro' => 'fas fa-theater-masks',
-    'Viagem' => 'fas fa-plane',
-    'Hotel' => 'fas fa-bed',
-    'Festa' => 'fas fa-birthday-cake',
-    'Jogos' => 'fas fa-gamepad',
-    'Streaming' => 'fas fa-play-circle',
-    'Netflix' => 'fas fa-play-circle',
-    'Spotify' => 'fas fa-music',
-    
-    // Roupas e Beleza
-    'Roupas' => 'fas fa-tshirt',
-    'Calçados' => 'fas fa-shoe-prints',
-    'Beleza' => 'fas fa-cut',
-    'Cabelo' => 'fas fa-cut',
-    'Cosméticos' => 'fas fa-palette',
-    
-    // Finanças
-    'Banco' => 'fas fa-university',
-    'Cartão' => 'fas fa-credit-card',
-    'Investimento' => 'fas fa-chart-line',
-    'Seguro' => 'fas fa-shield-alt',
-    'Taxa' => 'fas fa-receipt',
-    
-    // Trabalho
-    'Trabalho' => 'fas fa-briefcase',
-    'Material de Trabalho' => 'fas fa-laptop',
-    'Transporte Trabalho' => 'fas fa-subway',
-    
-    // Pets
-    'Pet' => 'fas fa-paw',
-    'Veterinário' => 'fas fa-paw',
-    'Ração' => 'fas fa-bone',
-    
-    // Doações e Presentes
-    'Presente' => 'fas fa-gift',
-    'Doação' => 'fas fa-hand-holding-heart',
-    'Caridade' => 'fas fa-hands-helping',
-    
-    // Outros
-    'Outros' => 'fas fa-ellipsis-h',
-    'Diversos' => 'fas fa-list',
-    'Emergência' => 'fas fa-exclamation-triangle',
-    'Manutenção' => 'fas fa-tools',
-    'Limpeza' => 'fas fa-broom',
-    'Eletrônicos' => 'fas fa-mobile-alt',
-    'Móveis' => 'fas fa-couch',
-    'Decoração' => 'fas fa-paint-brush'
-];
-
-// Função para normalizar nome da categoria para busca do ícone - MELHORADA
-function buscarIconeCategoria($categoria, $icons) {
-    // Primeiro, tenta busca exata
-    if (isset($icons[$categoria])) {
-        return $icons[$categoria];
-    }
-    
-    // Tenta busca exata em minúsculas
-    $categoria_lower = strtolower($categoria);
-    if (isset($icons[$categoria_lower])) {
-        return $icons[$categoria_lower];
-    }
-    
-    // Busca por palavras-chave na categoria
-    foreach ($icons as $key => $icon) {
-        $key_lower = strtolower($key);
-        if (strpos($categoria_lower, $key_lower) !== false || strpos($key_lower, $categoria_lower) !== false) {
-            return $icon;
-        }
-    }
-    
-    // Mapeamento específico para valores do transactions.php
-    $mapeamento_especifico = [
-        'alimentacao' => 'fas fa-utensils',
-        'divida' => 'fas fa-credit-card',
-        'emprestimo' => 'fas fa-hand-holding-usd',
-        'consorcio' => 'fas fa-handshake',
-        'aluguel' => 'fas fa-home',
-        'energia' => 'fas fa-bolt',
-        'internet' => 'fas fa-wifi',
-        'agua' => 'fas fa-tint',
-        'lazer' => 'fas fa-gamepad'
-    ];
-    
-    if (isset($mapeamento_especifico[$categoria_lower])) {
-        return $mapeamento_especifico[$categoria_lower];
-    }
-    
-    // Ícone padrão se não encontrar
-    return 'fas fa-shopping-cart';
-}
-
-// Buscar dados para contas (últimos 30 dias)
-$stmt = $conn->prepare("
-    SELECT 
-        SUM(CASE WHEN tipo = 'Entrada' THEN valor ELSE -valor END) AS saldo
-    FROM transacoes 
-    WHERE usuario_id = ? 
-    AND data >= date('now', '-30 days')
-");
-$stmt->execute([$id]);
-$conta_corrente = $stmt->fetchColumn() ?? 0;
-
-// Calcular saldo do mês
-$saldo_mes = $entradas_mes - $saidas_mes;
-
-// Percentuais: tudo em Balance
-$perc_investment = 0;
-$perc_goals = 0;
-$perc_balance = 100; // 100% concentrado no Balance
-
-// Calcular percentuais para o gráfico de rosca
-$total_absoluto = abs($entradas_mes) + abs($saidas_mes);  // <- soma absoluta correta
-
-if ($total_absoluto > 0) {
-    $perc_balance = 100;   // Tudo concentrado no saldo
-    $perc_investment = 0;  // Zerado
-    $perc_goals = 0;       // Zerado
-} else {
-    $perc_balance = 100;   // Mantém 100% mesmo sem movimentações
-    $perc_investment = 0;
-    $perc_goals = 0;
-}
-
-
-// Buscar notificações não lidas
+// Notificações
 $sql_notificacoes = "SELECT * FROM notificacoes WHERE usuario_id = ? AND lida = 0 ORDER BY data_criacao DESC LIMIT 3";
 $stmt_notificacoes = $conn->prepare($sql_notificacoes);
 $stmt_notificacoes->execute([$id]);
 $notificacoes = $stmt_notificacoes->fetchAll(PDO::FETCH_ASSOC);
 
-// Contar total de notificações não lidas
 $sql_count = "SELECT COUNT(*) as total FROM notificacoes WHERE usuario_id = ? AND lida = 0";
 $stmt_count = $conn->prepare($sql_count);
 $stmt_count->execute([$id]);
 $total_nao_lidas = $stmt_count->fetch(PDO::FETCH_ASSOC)['total'];
 
-// Data atual
 $data_atual = date("d-m-y H:i");
 ?>
 <!DOCTYPE html>
@@ -604,8 +364,8 @@ $data_atual = date("d-m-y H:i");
                     </a>
                 </li>
                 <li>
-                    <a href="#">
-                        <i class="fas fa-wallet"></i> Budget
+                    <a href="metas.php">
+                        <i class="fas fa-wallet"></i> Goals
                     </a>
                 </li>
                 <li>
