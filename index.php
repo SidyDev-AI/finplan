@@ -42,7 +42,7 @@
       <a href="/src/pages/register.html">Criar Nova Conta</a>
       <p> --------------- OU --------------- </p>
       <div class="social-media">
-        <a href="#"><img src="/src/img/icons/google.png" alt="Link google account login"></a>
+        <a href="/src/backend/google-login.php"><img src="/src/img/icons/google.png" alt="Login com conta Google"></a>
         <a href="#"><img src="/src/img/icons/apple.png" alt="Link apple account login"></a>
       </div>
     </div>

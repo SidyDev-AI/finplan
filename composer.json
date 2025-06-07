@@ -1,0 +1,15 @@
+{
+    "name": "lucasmoura/finplan",
+    "autoload": {
+        "psr-4": {
+            "Lucasmoura\\Finplan\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Lucas Moura",
+            "email": "42685124+luc4sm0ur4@users.noreply.github.com"
+        }
+    ],
+    "require": {}
+}
