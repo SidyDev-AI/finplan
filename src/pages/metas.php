@@ -262,6 +262,7 @@ $metas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         <section class="list-metas">
           <?php foreach ($metas as $meta): 
+            $id = $meta['id'];
             $valor = (float)$meta['valor'];
             $valor_atual = (float)$meta['valor_atual'];
             $porcentagem = $valor > 0 ? min(100, ($valor_atual / $valor) * 100) : 0;
@@ -269,14 +270,60 @@ $metas = $stmt->fetchAll(PDO::FETCH_ASSOC);
             // Cálculo do stroke-dashoffset para barra circular
             $dashArray = 157.08; // Circunferência semicircular do SVG
             $dashOffset = $dashArray - ($dashArray * $porcentagem / 100);
+
+            $dataFinal = $meta['data_final'];
+            list($ano, $mes, $dia) = explode('-', $dataFinal);
           ?>
           <div class="card">
             <div class="title-meta">
               <h3 class="card-title"><?= htmlspecialchars($meta['titulo']) ?></h3>
-              <button class="btn toggle-menu">
+              <button id="openViewMeta" class="btn toggle-menu" data-id="<?= $meta['id'] ?>">
                 <i class="fa-regular fa-eye"></i>
               </button>
             </div>
+
+            <div class="view-metas-popup" style="display: none;">
+              <div class="title-view-metas">
+                <h2><?= htmlspecialchars($meta['titulo']) ?></h2>
+                <button id="closeViewMeta" class="fechar-btn">X</button>
+              </div>
+              <div class="info-view-metas">
+                <div class="info-nome-meta">
+                  <h3>Nome da Meta</h3>
+                  <input type="text" name="nomeMeta" class="nomeMetaInput" placeholder="Nome da Meta" value="<?= htmlspecialchars($meta['titulo']) ?>" readonly>
+                </div>
+                <div class="info-valor-meta">
+                  <h3>Valor da Meta</h3>
+                  <input type="text" name="valorMeta" class="valorMetaInput" placeholder="Digite o valor da meta" value="R$<?= number_format($valor, 2, ',', '.') ?>" readonly>
+                </div>
+                <div class="info-valorAtual-meta">
+                  <h3>Valor em caixa</h3>
+                  <input type="text" name="valorAtualMeta" class="valorAtualMetaInput" placeholder="Digite o valor da meta" value="R$<?= number_format($valor_atual, 2, ',', '.') ?>" readonly>
+                </div>
+                <!-- Data Final (usuário escolhe) -->
+                <div class="info-view-date">
+                  <h3>Data Final</h3>
+                  <div class="view-date">
+                    <!-- Dia -->
+                    <select class="info-date day view_day_final" name="view_day_final" disabled></select>
+                    <!-- Mês -->
+                    <select class="info-date mes view_month_final" name="view_month_final" disabled></select>
+                    <!-- Ano -->
+                    <select class="info-date ano view_year_final" name="view_year_final" disabled></select>
+                    <input type="hidden" class="data-final-salva" value="<?= $meta['data_final'] ?>">
+                  </div>
+                </div>
+                <div class="info-descricao-meta">
+                  <h3>Descrição</h3>
+                  <textarea name="descricaoViewMeta" class="descricaoViewMeta" placeholder="Descreva sua meta" readonly><?= htmlspecialchars($meta['descricao']) ?></textarea>
+                </div>
+                <div class="view-metas-buttons">
+                  <button type="button" class="view-metas-btn editar-meta">Editar</button>
+                  <button type="button" class="view-metas-btn excluir-meta" data-id="<?= $meta['id'] ?>">Excluir</button>
+                </div>
+              </div>
+            </div>
+
             <div class="progress-circle">
               <svg class="progress-svg" viewBox="0 0 140 80">
                 <path class="progress-bg" d="M 20 60 A 50 50 0 0 1 120 60" stroke-dasharray="<?= $dashArray ?>" stroke-dashoffset="0"/>
