@@ -1,12 +1,12 @@
 <?php
 session_start();
-require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../../../../vendor/autoload.php';
 
 use Google\Client;
 use Dotenv\Dotenv;
 
 // Carrega o .env
-$dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
+$dotenv = Dotenv::createImmutable(paths: __DIR__ . '/../../../../');
 $dotenv->load();
 
 // Inicializa o cliente Google
@@ -31,7 +31,7 @@ if (isset($_GET['code'])) {
         $userInfo = $oauth2->userinfo->get();
 
         // Conecta ao banco
-        $conn = require_once __DIR__ . '/../../Database/conn.php';
+        $conn = require_once __DIR__ . '/../../../../database/conn.php';
 
         $stmt = $conn->prepare("SELECT id FROM usuarios WHERE email = ?");
         $stmt->execute([$userInfo->email]);
@@ -47,8 +47,8 @@ if (isset($_GET['code'])) {
         }
 
         $_SESSION['usuario_id'] = $usuario_id;
-        header('Location: ../../src/pages/dashboard.php');
-        exit;
+        header('Location: /src/pages/dashboard.php');
+        exit;   
 
     } catch (Exception $e) {
         echo "Erro no login com Google: " . htmlspecialchars($e->getMessage());
