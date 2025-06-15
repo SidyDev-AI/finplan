@@ -23,7 +23,8 @@
     <div id="content">
       <img class="logo" src="/src/img/logo.png" alt="Logo FinPlan">
       <h1>Acesse sua conta</h1>
-      <form id="formLogin" action="src/backend/login.php" method="POST">
+
+      <form id="formLogin">
         <div class="email">
           <i class="fa-solid fa-envelope"></i>
           <input type="email" id="email" name="email" placeholder="E-mail" required>
@@ -33,19 +34,44 @@
           <input type="password" id="senha" name="senha" placeholder="Senha" required minlength="6">
         </div>
         <div class="conectado">
-          <input type="checkbox" name="" id="">
-          <p>Permanercer conectado</p>
+          <input type="checkbox" id="keepLogged">
+          <p>Permanecer conectado</p>
         </div>
         <button type="submit" class="form-btn">Login</button>
+        <p id="mensagemErro" style="color: red; margin-top: 10px;"></p>
       </form>
+
       <p><a class="esqueci" href="/src/pages/confirmarEmail.php">Esqueci minha senha!</a></p>
       <a href="/src/pages/register.html">Criar Nova Conta</a>
-      <p> --------------- OU --------------- </p>
+      <p>--------------- OU ---------------</p>
       <div class="social-media">
-        <a href="/src/backend/google-login.php"><img src="/src/img/icons/google.png" alt="Login com conta Google"></a>
-        <a href="#"><img src="/src/img/icons/apple.png" alt="Link apple account login"></a>
+        <a href="src/backend/api/auth/google-login.php"><img src="/src/img/icons/google.png" alt="Login com conta Google"></a>
+        <a href="#"><img src="/src/img/icons/apple.png" alt="Login com conta Apple (desativado)"></a>
       </div>
     </div>
   </section>
+
+  <script>
+    document.getElementById('formLogin').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value;
+      const senha = document.getElementById('senha').value;
+
+      const resposta = await fetch('src/backend/api/auth/api_auth.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, senha })
+      });
+
+      const resultado = await resposta.json();
+
+      if (resultado.success) {
+        window.location.href = "src/pages/dashboard.php";
+      } else {
+        document.getElementById('mensagemErro').textContent = resultado.message || "Erro ao fazer login.";
+      }
+    });
+  </script>
 </body>
 </html>

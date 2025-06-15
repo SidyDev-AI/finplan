@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="../css/register.css">
+  <link rel="stylesheet" href="../css/register.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -13,17 +13,15 @@
 <body>
   <section id="container">
     <div class="theme">
-      <div class="sun">
-        <i class="fa-solid fa-sun"></i>
-      </div>
-      <div class="moon">
-        <i class="fa-solid fa-moon"></i>
-      </div>
+      <div class="sun"><i class="fa-solid fa-sun"></i></div>
+      <div class="moon"><i class="fa-solid fa-moon"></i></div>
     </div>
+
     <div id="content">
       <img class="logo" src="../img/logo.png" alt="Logo FinPlan">
       <h1>Criar conta</h1>
-      <form id="formCadastro" action="../backend/cadastrar_usuario.php" method="POST">
+
+      <form id="formCadastro">
         <div class="user">
           <i class="fa-solid fa-user"></i>
           <input type="text" id="nome" name="nome" placeholder="Nome Completo" required>
@@ -40,15 +38,56 @@
           <i class="fa-solid fa-lock"></i>
           <input type="password" id="confirm_senha" name="confirm_senha" placeholder="Confirmar senha" required minlength="6">
         </div>
+        <p id="mensagemErro" style="color: red; margin-top: 10px;"></p>
         <button type="submit" class="form-btn">Cadastrar</button>
       </form>
-      <p>Já possui conta? <a href="../../index.html">Entrar</a></p>
-      <p> --------------- OU --------------- </p>
+
+      <p>Já possui conta? <a href="../../index.php">Entrar</a></p>
+      <p>--------------- OU ---------------</p>
       <div class="social-media">
-        <a href="#"><img src="../img/icons/google.png" alt="Link google account login"></a>
-        <a href="#"><img src="../img/icons/apple.png" alt="Link apple account login"></a>
+        <a href="src/backend/api/auth/google-login.php"><img src="../img/icons/google.png" alt="Login Google"></a>
+        <a href="#"><img src="../img/icons/apple.png" alt="Login Apple"></a>
       </div>
     </div>
   </section>
+
+  <script>
+    document.getElementById('formCadastro').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const nome = document.getElementById('nome').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const senha = document.getElementById('senha').value;
+      const confirmarSenha = document.getElementById('confirm_senha').value;
+
+      const msgErro = document.getElementById('mensagemErro');
+      msgErro.textContent = '';
+
+      if (senha !== confirmarSenha) {
+        msgErro.textContent = "As senhas não coincidem.";
+        return;
+      }
+
+      try {
+        const resposta = await fetch('../backend/api/auth/api_register.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nome, email, senha })
+        });
+
+        const resultado = await resposta.json();
+
+        if (resultado.success) {
+          window.location.href = 'dashboard.php';
+        } else {
+          msgErro.textContent = resultado.message || "Erro ao cadastrar.";
+        }
+
+      } catch (erro) {
+        msgErro.textContent = "Erro de comunicação com o servidor.";
+        console.error(erro);
+      }
+    });
+  </script>
 </body>
 </html>
