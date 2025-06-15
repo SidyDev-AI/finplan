@@ -52,7 +52,7 @@ $total_nao_lidas = $stmt_count->fetch(PDO::FETCH_ASSOC)['total'];
 
 $data_atual = date("d-m-y H:i");
 
-// CORREÇÃO: buscar apenas as transações do usuário
+// Buscar apenas transações do usuário
 $stmt = $conn->prepare("SELECT * FROM transacoes WHERE usuario_id = ? ORDER BY data DESC");
 $stmt->execute([$id]);
 $result = $stmt;
