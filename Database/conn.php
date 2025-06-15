@@ -43,7 +43,7 @@ function conectarBanco() {
       usuario_id INTEGER NOT NULL,
       titulo TEXT NOT NULL,
       valor REAL NOT NULL,
-      valor_atual REAL DEFAULT 150,
+      valor_atual REAL DEFAULT 0,
       data_inicial TEXT NOT NULL,
       data_final TEXT NOT NULL,
       descricao TEXT NOT NULL,
