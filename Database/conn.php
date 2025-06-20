@@ -10,13 +10,14 @@ function conectarBanco() {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $pdo->exec('PRAGMA foreign_keys = ON;');
 
-    // Tabela de usuários
+    // Tabela de usuários com campo "role"
     $sqlUsuarios = "CREATE TABLE IF NOT EXISTS usuarios (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       nome TEXT NOT NULL,
       email TEXT NOT NULL UNIQUE,
       senha TEXT NOT NULL,
       cpf TEXT NULL,
+      role TEXT NOT NULL DEFAULT 'usuario',
       data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )";
 
@@ -69,6 +70,27 @@ function conectarBanco() {
     $pdo->exec($sqlMetas);
     $pdo->exec($sqlNotificacoes);
 
+    // ✅ Verifica se o admin já existe
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM usuarios WHERE role = 'admin'");
+    $stmt->execute();
+    $adminExiste = $stmt->fetchColumn();
+
+    // ✅ Se não existir, cria um admin padrão
+    if (!$adminExiste) {
+      $nome = 'Administrador';
+      $email = 'admin@gmail.com';
+      $senha = 'admin123';
+      $cpf = null;
+      $role = 'admin';
+
+      $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+
+      $stmt = $pdo->prepare("INSERT INTO usuarios (nome, email, senha, cpf, role) VALUES (?, ?, ?, ?, ?)");
+      $stmt->execute([$nome, $email, $senhaHash, $cpf, $role]);
+
+      // echo "Usuário admin criado automaticamente.\n"; // opcional
+    }
+
     return $pdo;
 
   } catch (PDOException $e) {
@@ -112,7 +134,6 @@ function calcularResumoFinanceiro($pdo, $usuario_id) {
 
     return $resumo;
 }
-
 
 return conectarBanco();
 ?>

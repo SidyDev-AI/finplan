@@ -1,6 +1,6 @@
 <?php
 session_start();
-$conn = require_once __DIR__ . '/../../../Database/conn.php';
+$conn = require_once __DIR__ . '/../../../../Database/conn.php';
 
 header('Content-Type: application/json');
 

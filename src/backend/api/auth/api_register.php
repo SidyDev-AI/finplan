@@ -2,7 +2,7 @@
 session_start();
 header('Content-Type: application/json');
 
-$conn = require_once __DIR__ . '/../../../Database/conn.php';
+$conn = require_once __DIR__ . '/../../../../Database/conn.php';
 
 $data = json_decode(file_get_contents('php://input'), true);
 

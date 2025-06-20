@@ -3,8 +3,8 @@ session_start();
 $conn = require_once __DIR__ . '/../../Database/conn.php';
 
 // Verifica se o usuário está logado
-if (!isset($_SESSION['usuario_id'])) {
-  header("Location: ../../index.php");
+if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_role'] !== 'usuario') {
+  header('Location: ../../index.php');
   exit();
 }
 
