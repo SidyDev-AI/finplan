@@ -1,9 +1,7 @@
 <?php
 session_start();
 $conn = require_once __DIR__ . '/../../Database/conn.php';
-require_once __DIR__ . '/../backend/icones_categorias.php'; // ⬅️ Inclusão do novo arquivo
 
-// Verifica se o usuário está logado
 if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_role'] !== 'usuario') {
   header('Location: ../../index.php');
   exit();

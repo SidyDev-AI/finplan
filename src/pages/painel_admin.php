@@ -2,19 +2,17 @@
 session_start();
 $conn = require_once __DIR__ . '/../../Database/conn.php';
 
-// Verifica se o usuário está logado
 if (!isset($_SESSION['logado']) || $_SESSION['usuario_role'] !== 'admin') {
   header('Location: ../../index.php');
   exit();
 }
 
 $id = $_SESSION['usuario_id'];
-
-// Buscar dados do usuário
 $stmt = $conn->prepare("SELECT nome, email, cpf FROM usuarios WHERE id = ?");
 $stmt->execute([$id]);
 $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
-$primeiro_nome = !empty($usuario['nome']) ? explode(' ', $usuario['nome'])[0] : 'Usuário';
+$primeiro_nome = !empty($usuario['nome']) ? explode(' ', $usuario['nome'])[0] : 'Admin';
+
 ?>
 
 <!DOCTYPE html>

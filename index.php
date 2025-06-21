@@ -66,11 +66,13 @@
 
       const resultado = await resposta.json();
 
-      if (resultado.success) {
-        window.location.href = "src/pages/dashboard.php";
-      } else {
-        document.getElementById('mensagemErro').textContent = resultado.message || "Erro ao fazer login.";
-      }
+     if (resultado.success) {
+        if (resultado.role === 'admin') {
+          window.location.href = "src/pages/painel_admin.php";
+        } else {
+          window.location.href = "src/pages/dashboard.php";
+        }
+      } 
     });
   </script>
 </body>

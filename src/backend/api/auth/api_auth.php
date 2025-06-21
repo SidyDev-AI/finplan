@@ -14,7 +14,7 @@ if (!$email || !$senha) {
   exit;
 }
 
-$stmt = $conn->prepare("SELECT id, senha FROM usuarios WHERE email = ?");
+$stmt = $conn->prepare("SELECT id, senha, role, nome FROM usuarios WHERE email = ?");
 $stmt->execute([$email]);
 $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -24,5 +24,13 @@ if (!$usuario || !password_verify($senha, $usuario['senha'])) {
 }
 
 $_SESSION['usuario_id'] = $usuario['id'];
-echo json_encode(['success' => true]);
+$_SESSION['usuario_role'] = $usuario['role'];
+$_SESSION['usuario_nome'] = $usuario['nome'];
+$_SESSION['logado'] = true;
+
+echo json_encode([
+  'success' => true,
+  'role' => $usuario['role'],
+  'redirect' => $usuario['role'] === 'admin' ? '/src/pages/painel_admin.php' : '/src/pages/dashboard.php'
+]);
 exit;
