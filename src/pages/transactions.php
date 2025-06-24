@@ -58,7 +58,8 @@ $total_nao_lidas = $stmt_count->fetch(PDO::FETCH_ASSOC)['total'];
 $data_atual = date("d-m-y H:i");
 
 // Consulta todas as transações
-$result = $conn->query("SELECT * FROM transacoes ORDER BY data DESC");
+$result = $conn->prepare("SELECT * FROM transacoes WHERE usuario_id = ? ORDER BY data DESC");
+$result->execute([$id]);
 
 // Total de entradas
 $stmt = $conn->prepare("SELECT SUM(valor) as total_entradas FROM transacoes WHERE usuario_id = ? AND tipo = 'Entrada'");

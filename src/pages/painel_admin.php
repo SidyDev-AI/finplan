@@ -48,15 +48,17 @@ $primeiro_nome = !empty($usuario['nome']) ? explode(' ', $usuario['nome'])[0] : 
       <div class="card users-card">
         <div class="card-info users">
           <img src="../img/icons/person.png">
-          <h1>7.500 K</h1>
+          <h1 id="totalUsuarios">0</h1>
           <h2>Users</h2>
         </div>
-        <button class="btn">View Users</button>
+        <a href="listar_usuarios.php" class="btn" style="text-align: center; padding-top: 5px; text-decoration: none; color: #333;">
+          Ver Usuários
+        </a>
       </div>
       <div class="card chat-card">
         <div class="card-info chat">
           <img src="../img/icons/chat.png">
-          <h1>7.500 K</h1>
+          <h1>N/A</h1>
           <h2>Mensagens</h2>
         </div>
         <button class="btn">Chat</button>
@@ -64,8 +66,8 @@ $primeiro_nome = !empty($usuario['nome']) ? explode(' ', $usuario['nome'])[0] : 
       <div class="card investments-card">
         <div class="card-info investments">
           <img src="../img/icons/graphic.png">
-          <h1>7.500 K</h1>
-          <h2>Investments</h2>
+          <h1 id="totalTransacoes">0</h1>
+          <h2>Transações</h2>
         </div>
         <button class="btn">Visualizar</button>
       </div>
@@ -73,35 +75,13 @@ $primeiro_nome = !empty($usuario['nome']) ? explode(' ', $usuario['nome'])[0] : 
     <div class="content">
       <div class="list-users-transactions">
         <h1>All Recents Transactions</h1>
-        <div class="list-transactions">
-          <div class="item-list">
-            <div class="circle"></div>
-            <h3 class="item-user">User Name</h3>
-            <p class="item-category">Category</p>
-            <p class="item-pagamento">Forma Pagamento</p>
-            <p class="item-data">Data</p>
-            <p class="item-valor">Valor</p>
-          </div>
-          <div class="item-list">
-            <div class="circle"></div>
-            <h3 class="item-user">User Name</h3>
-            <p class="item-category">Category</p>
-            <p class="item-pagamento">Forma Pagamento</p>
-            <p class="item-data">Data</p>
-            <p class="item-valor">Valor</p>
-          </div>
-          <div class="item-list">
-            <div class="circle"></div>
-            <h3 class="item-user">User Name</h3>
-            <p class="item-category">Category</p>
-            <p class="item-pagamento">Forma Pagamento</p>
-            <p class="item-data">Data</p>
-            <p class="item-valor">Valor</p>
-          </div>
+        <div class="list-transactions" id="listaTransacoes">
+          <p>Carregando transações...</p>
         </div>
       </div>
       <div class="graphic-new-users"></div>
     </div>
   </main>
+  <script src="../js/list-dados-usuarios.js"></script>
 </body>
 </html>
