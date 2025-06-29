@@ -207,3 +207,290 @@ Entrega de funcionalidades visuais e operacionais essenciais:
 [Relatório do Projeto com a 2° Interação](Relatorio.md)
 
 ---
+
+# ✅ 3ª Iteração: Dashboard e Gestão de Transações
+
+## User Stories
+
+### US005 – Dashboard Financeiro
+**Como** usuário, **quero** ver um resumo gráfico das minhas finanças **para** entender meu saldo mensal.  
+**Critérios de Aceite:**
+- Saldo atual com base em receitas e despesas
+- Gráficos em pizza e barra
+- Filtros por dia/mês/ano
+
+📸 ![Dashboard](/prototipos/dashboard.jpg)
+
+---
+
+### US006 – Metas Financeiras
+**Como** usuário, **quero** visualizar minhas metas no dashboard **para** acompanhar meu progresso.  
+**Critérios de Aceite:**
+- Exibição de metas
+- Progresso em percentual
+
+---
+
+### US007 – Sugestões de Investimento
+**Como** usuário, **quero** sugestões baseadas no meu perfil **para** investir melhor.  
+**Critérios de Aceite:**
+- Sugestões alinhadas ao perfil
+- Filtros por tipo de investimento
+
+---
+
+### US008 – Adicionar Transação
+**Como** usuário, **quero** registrar despesas e receitas com categoria e valor.  
+**Critérios de Aceite:**
+- Campos obrigatórios: valor, data, categoria, descrição
+- Valor maior que zero
+
+---
+
+### US009 – Editar/Excluir Transação
+**Como** usuário, **quero** corrigir ou remover transações.  
+**Critérios de Aceite:**
+- Edição de qualquer campo
+- Confirmação antes da exclusão
+
+---
+
+## Requisitos Funcionais (RF)
+
+### Gestão de Transações
+
+- **RF005:** Cadastro de transações com valor, data, categoria, descrição e comprovante
+- **RF006:** Edição e exclusão de transações
+
+### Dashboard e Visualização
+
+- **RF007:** Exibição de saldo, gráficos e metas
+- **RF008:** Filtros por período
+
+---
+
+## ✅ Valor Entregue - 3ª Iteração
+
+### Resumo:
+Entrega de funcionalidades visuais e operacionais essenciais:  
+✅ Dashboard gráfico e filtros  
+✅ Gestão de receitas e despesas  
+✅ Projeções de metas e investimentos
+
+---
+
+### Detalhamento de Valor
+
+| User Story | Valor para o Usuário | Valor para o Negócio |
+|-----------|----------------------|-----------------------|
+| US005     | Visualização clara do saldo | Engajamento com uso contínuo |
+| US006     | Acompanhamento de metas     | Retenção por metas alcançadas |
+| US007     | Dicas personalizadas        | Upselling ou parcerias futuras |
+| US008     | Registro completo de finanças | Dados detalhados para análises |
+| US009     | Correção de erros            | Confiabilidade no sistema |
+
+
+---
+
+## 📊 Protótipos Validados
+
+- Dashboard funcional
+- Registro de transações com anexo
+- Filtros temporais aplicados
+
+---
+
+[Relatório do Projeto com a 3° Interação](Relatorio.md)
+
+---
+
+# ✅ 4ª Iteração: Dashboard e Gestão de Transações
+
+## User Stories
+
+### US005 – Dashboard Financeiro
+**Como** usuário, **quero** ver um resumo gráfico das minhas finanças **para** entender meu saldo mensal.  
+**Critérios de Aceite:**
+- Saldo atual com base em receitas e despesas
+- Gráficos em pizza e barra
+- Filtros por dia/mês/ano
+
+📸 ![Dashboard](/prototipos/dashboard.jpg)
+
+---
+
+### US006 – Metas Financeiras
+**Como** usuário, **quero** visualizar minhas metas no dashboard **para** acompanhar meu progresso.  
+**Critérios de Aceite:**
+- Exibição de metas
+- Progresso em percentual
+
+---
+
+### US007 – Sugestões de Investimento
+**Como** usuário, **quero** sugestões baseadas no meu perfil **para** investir melhor.  
+**Critérios de Aceite:**
+- Sugestões alinhadas ao perfil
+- Filtros por tipo de investimento
+
+---
+
+### US008 – Adicionar Transação
+**Como** usuário, **quero** registrar despesas e receitas com categoria e valor.  
+**Critérios de Aceite:**
+- Campos obrigatórios: valor, data, categoria, descrição
+- Valor maior que zero
+
+---
+
+### US009 – Editar/Excluir Transação
+**Como** usuário, **quero** corrigir ou remover transações.  
+**Critérios de Aceite:**
+- Edição de qualquer campo
+- Confirmação antes da exclusão
+
+---
+
+## Requisitos Funcionais (RF)
+
+### Gestão de Transações
+
+- **RF005:** Cadastro de transações com valor, data, categoria, descrição e comprovante
+- **RF006:** Edição e exclusão de transações
+
+### Dashboard e Visualização
+
+- **RF007:** Exibição de saldo, gráficos e metas
+- **RF008:** Filtros por período
+
+---
+
+## ✅ Valor Entregue - 4ª Iteração
+
+### Resumo:
+Entrega de funcionalidades visuais e operacionais essenciais:  
+✅ Dashboard gráfico e filtros  
+✅ Gestão de receitas e despesas  
+✅ Projeções de metas e investimentos
+
+---
+
+### Detalhamento de Valor
+
+| User Story | Valor para o Usuário | Valor para o Negócio |
+|-----------|----------------------|-----------------------|
+| US005     | Visualização clara do saldo | Engajamento com uso contínuo |
+| US006     | Acompanhamento de metas     | Retenção por metas alcançadas |
+| US007     | Dicas personalizadas        | Upselling ou parcerias futuras |
+| US008     | Registro completo de finanças | Dados detalhados para análises |
+| US009     | Correção de erros            | Confiabilidade no sistema |
+
+
+---
+
+## 📊 Protótipos Validados
+
+- Dashboard funcional
+- Registro de transações com anexo
+- Filtros temporais aplicados
+
+---
+
+[Relatório do Projeto com a 4° Interação](Relatorio.md)
+
+---
+# ✅ 5ª Iteração: Dashboard e Gestão de Transações
+
+## User Stories
+
+### US005 – Dashboard Financeiro
+**Como** usuário, **quero** ver um resumo gráfico das minhas finanças **para** entender meu saldo mensal.  
+**Critérios de Aceite:**
+- Saldo atual com base em receitas e despesas
+- Gráficos em pizza e barra
+- Filtros por dia/mês/ano
+
+📸 ![Dashboard](/prototipos/dashboard.jpg)
+
+---
+
+### US006 – Metas Financeiras
+**Como** usuário, **quero** visualizar minhas metas no dashboard **para** acompanhar meu progresso.  
+**Critérios de Aceite:**
+- Exibição de metas
+- Progresso em percentual
+
+---
+
+### US007 – Sugestões de Investimento
+**Como** usuário, **quero** sugestões baseadas no meu perfil **para** investir melhor.  
+**Critérios de Aceite:**
+- Sugestões alinhadas ao perfil
+- Filtros por tipo de investimento
+
+---
+
+### US008 – Adicionar Transação
+**Como** usuário, **quero** registrar despesas e receitas com categoria e valor.  
+**Critérios de Aceite:**
+- Campos obrigatórios: valor, data, categoria, descrição
+- Valor maior que zero
+
+---
+
+### US009 – Editar/Excluir Transação
+**Como** usuário, **quero** corrigir ou remover transações.  
+**Critérios de Aceite:**
+- Edição de qualquer campo
+- Confirmação antes da exclusão
+
+---
+
+## Requisitos Funcionais (RF)
+
+### Gestão de Transações
+
+- **RF005:** Cadastro de transações com valor, data, categoria, descrição e comprovante
+- **RF006:** Edição e exclusão de transações
+
+### Dashboard e Visualização
+
+- **RF007:** Exibição de saldo, gráficos e metas
+- **RF008:** Filtros por período
+
+---
+
+## ✅ Valor Entregue - 5ª Iteração
+
+### Resumo:
+Entrega de funcionalidades visuais e operacionais essenciais:  
+✅ Dashboard gráfico e filtros  
+✅ Gestão de receitas e despesas  
+✅ Projeções de metas e investimentos
+
+---
+
+### Detalhamento de Valor
+
+| User Story | Valor para o Usuário | Valor para o Negócio |
+|-----------|----------------------|-----------------------|
+| US005     | Visualização clara do saldo | Engajamento com uso contínuo |
+| US006     | Acompanhamento de metas     | Retenção por metas alcançadas |
+| US007     | Dicas personalizadas        | Upselling ou parcerias futuras |
+| US008     | Registro completo de finanças | Dados detalhados para análises |
+| US009     | Correção de erros            | Confiabilidade no sistema |
+
+
+---
+
+## 📊 Protótipos Validados
+
+- Dashboard funcional
+- Registro de transações com anexo
+- Filtros temporais aplicados
+
+---
+
+[Relatório do Projeto com a 5° Interação](Relatorio.md)
+
+---

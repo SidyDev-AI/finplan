@@ -1,4 +1,4 @@
-# 💰 FinPlan – Sistema de Controle Financeiro Pessoal
+# 💰 FinPlan – Sistema Pessoal de Controle Financeiro
 
 Projeto desenvolvido na disciplina de **Engenharia de Software** na **Universidade Federal do Tocantins (UFT)**.  
 O **FinPlan** é um sistema web open-source para controle financeiro pessoal, com funcionalidades como:
