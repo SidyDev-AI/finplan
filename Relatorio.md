@@ -50,9 +50,9 @@
 | Atividade                                                  | Feature                 | Autor  | Revisor |
 |------------------------------------------------------------|-------------------------|--------|---------|
 | Implementação de Testes Unitarios                          | **teste_unitario**      | Lucas  | Jose    |
-| API interna do Projeto(login,cadastro,etc)                 | **RF008_google_auth**   | Lucas  | Jose    |
+| ImplementaçãoAPI interna do Projeto(login,cadastro,etc)    | **RF008_google_auth**   | Lucas  | Jose    |
 | Tela e função de administradores                           | **RF019_adm**           | Jose   | Lucas   |
-| Refatoração do código do Projeto                           | **RF006_editar_excluir**| Lucas  | Jose    |
-| Refatoração do código do Projeto                           | **RF007_grafdashboard** | Lucas  | Jose    | 
+| Refatoração do código do Projeto apos novas features       | **RF006_editar_excluir**| Lucas  | Jose    |
+| Refatoração do código do Projeto apos novas features       | **RF007_grafdashboard** | Lucas  | Jose    | 
 | Melhorias                                                  | **RF007_metas**         | Jose   | Lucas   |
-| Refatoração do código do Projeto                           | **RF007_metas**         | Lucas  | Jose    |
+| Refatoração do código do Projeto apos novas features       | **RF007_metas**         | Lucas  | Jose    |

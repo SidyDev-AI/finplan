@@ -208,7 +208,7 @@ Entrega de funcionalidades visuais e operacionais essenciais:
 
 ---
 
-# ✅ 3ª Iteração: Dashboard e Gestão de Transações
+# ✅ 3ª Iteração: MVC
 
 ## User Stories
 
@@ -228,15 +228,7 @@ Entrega de funcionalidades visuais e operacionais essenciais:
 **Critérios de Aceite:**
 - Exibição de metas
 - Progresso em percentual
-
----
-
-### US007 – Sugestões de Investimento
-**Como** usuário, **quero** sugestões baseadas no meu perfil **para** investir melhor.  
-**Critérios de Aceite:**
-- Sugestões alinhadas ao perfil
-- Filtros por tipo de investimento
-
+📸 ![Metas](/prototipos/Metas(1).png)
 ---
 
 ### US008 – Adicionar Transação
@@ -244,38 +236,26 @@ Entrega de funcionalidades visuais e operacionais essenciais:
 **Critérios de Aceite:**
 - Campos obrigatórios: valor, data, categoria, descrição
 - Valor maior que zero
-
----
-
-### US009 – Editar/Excluir Transação
-**Como** usuário, **quero** corrigir ou remover transações.  
-**Critérios de Aceite:**
-- Edição de qualquer campo
-- Confirmação antes da exclusão
-
+📸 ![Cadastrar Transações](/prototipos/Transactions_popUp.png)
 ---
 
 ## Requisitos Funcionais (RF)
 
-### Gestão de Transações
+- **RF010:** Implementação da arquitetura MVC para todas as funcionalidades existentes (autenticação, dashboard, gestão de transações, metas).
 
-- **RF005:** Cadastro de transações com valor, data, categoria, descrição e comprovante
-- **RF006:** Edição e exclusão de transações
+- **RF011:** Otimização da lógica de negócio e acesso a dados para garantir melhor desempenho na exibição do dashboard e no registro/edição de transações.
 
-### Dashboard e Visualização
-
-- **RF007:** Exibição de saldo, gráficos e metas
-- **RF008:** Filtros por período
-
+- **RF012:** Refatoração de código para garantir maior modularidade e clareza, facilitando a manutenção e o desenvolvimento futuro.
 ---
 
 ## ✅ Valor Entregue - 3ª Iteração
 
 ### Resumo:
-Entrega de funcionalidades visuais e operacionais essenciais:  
-✅ Dashboard gráfico e filtros  
-✅ Gestão de receitas e despesas  
-✅ Projeções de metas e investimentos
+Entrega de uma base técnica aprimorada para o sistema, garantindo maior escalabilidade e manutenibilidade.
+
+✅ Estrutura de código organizada com MVC.
+✅ Melhoria de desempenho na exibição de dados.
+✅ Código mais limpo e fácil de manter.
 
 ---
 
@@ -283,11 +263,10 @@ Entrega de funcionalidades visuais e operacionais essenciais:
 
 | User Story | Valor para o Usuário | Valor para o Negócio |
 |-----------|----------------------|-----------------------|
-| US005     | Visualização clara do saldo | Engajamento com uso contínuo |
-| US006     | Acompanhamento de metas     | Retenção por metas alcançadas |
-| US007     | Dicas personalizadas        | Upselling ou parcerias futuras |
-| US008     | Registro completo de finanças | Dados detalhados para análises |
-| US009     | Correção de erros            | Confiabilidade no sistema |
+| US005     | Dashboard mais rápido e responsivo | Maior satisfação do usuário e menor taxa de abandono |
+| US006     | Visualização de metas mais fluida     | Experiência de usuário aprimorada, incentivando o uso contínuo |
+| US008     | Registro de transações mais ágil | Redução do atrito no uso diário, aumentando a frequência de uso |
+| Impacto Geral     | Sistema mais estável e confiável            | Redução de custos de manutenção e facilidade para adicionar novas funcionalidades |
 
 
 ---
@@ -304,35 +283,18 @@ Entrega de funcionalidades visuais e operacionais essenciais:
 
 ---
 
-# ✅ 4ª Iteração: Dashboard e Gestão de Transações
+# ✅ 4ª Iteração: API
 
 ## User Stories
-
-### US005 – Dashboard Financeiro
-**Como** usuário, **quero** ver um resumo gráfico das minhas finanças **para** entender meu saldo mensal.  
-**Critérios de Aceite:**
-- Saldo atual com base em receitas e despesas
-- Gráficos em pizza e barra
-- Filtros por dia/mês/ano
-
-📸 ![Dashboard](/prototipos/dashboard.jpg)
-
----
 
 ### US006 – Metas Financeiras
 **Como** usuário, **quero** visualizar minhas metas no dashboard **para** acompanhar meu progresso.  
 **Critérios de Aceite:**
 - Exibição de metas
 - Progresso em percentual
-
----
-
-### US007 – Sugestões de Investimento
-**Como** usuário, **quero** sugestões baseadas no meu perfil **para** investir melhor.  
-**Critérios de Aceite:**
-- Sugestões alinhadas ao perfil
-- Filtros por tipo de investimento
-
+📸 ![Metas](/prototipos/Metas(1).png)
+📸 ![Cadastrar Metas](/prototipos/Cadastrar_Metas.png)
+📸 ![Cadastrar Metas](/prototipos/Cadastrar_Metas(1).png)
 ---
 
 ### US008 – Adicionar Transação
@@ -340,6 +302,9 @@ Entrega de funcionalidades visuais e operacionais essenciais:
 **Critérios de Aceite:**
 - Campos obrigatórios: valor, data, categoria, descrição
 - Valor maior que zero
+📸 ![Transações](/prototipos/Transactions.png)
+📸 ![Transações](/prototipos/Transactions(1).png)
+📸 ![Cadastrar Transações](/prototipos/Transactions_popUp.png)
 
 ---
 
@@ -348,30 +313,32 @@ Entrega de funcionalidades visuais e operacionais essenciais:
 **Critérios de Aceite:**
 - Edição de qualquer campo
 - Confirmação antes da exclusão
-
+📸 ![Transações](/prototipos/Transactions(1).png)
 ---
+
+### US010 – API Interna
+**Como** usuário, **quero** fazer login via Google e uma API funcionando em todo o projeto.  
+**Critérios de Aceite:**
+- API interna para todo o projeto
+- API Google_Auth
 
 ## Requisitos Funcionais (RF)
 
-### Gestão de Transações
+- **RF013:** Implementação de uma API RESTful interna para gerenciar todas as operações de dados (CRUD de transações, metas, perfil de usuário).
 
-- **RF005:** Cadastro de transações com valor, data, categoria, descrição e comprovante
-- **RF006:** Edição e exclusão de transações
+- **RF014:** Integração completa da autenticação social via API do Google Sign-In, garantindo login seguro e eficiente.
 
-### Dashboard e Visualização
-
-- **RF007:** Exibição de saldo, gráficos e metas
-- **RF008:** Filtros por período
-
+- **RF015:** Comunicação do frontend com a API interna para todas as funcionalidades existentes, garantindo que a camada de apresentação consuma os dados de forma padronizada.
 ---
 
 ## ✅ Valor Entregue - 4ª Iteração
 
 ### Resumo:
-Entrega de funcionalidades visuais e operacionais essenciais:  
-✅ Dashboard gráfico e filtros  
-✅ Gestão de receitas e despesas  
-✅ Projeções de metas e investimentos
+Entrega de um sistema mais integrado, seguro e preparado para expansão, facilitando futuras conexões e funcionalidades.
+
+✅ Autenticação social aprimorada.
+✅ Base para integração com outros serviços.
+✅ Maior flexibilidade no desenvolvimento.
 
 ---
 
@@ -379,12 +346,11 @@ Entrega de funcionalidades visuais e operacionais essenciais:
 
 | User Story | Valor para o Usuário | Valor para o Negócio |
 |-----------|----------------------|-----------------------|
-| US005     | Visualização clara do saldo | Engajamento com uso contínuo |
-| US006     | Acompanhamento de metas     | Retenção por metas alcançadas |
-| US007     | Dicas personalizadas        | Upselling ou parcerias futuras |
-| US008     | Registro completo de finanças | Dados detalhados para análises |
-| US009     | Correção de erros            | Confiabilidade no sistema |
-
+| US006     | Visualização de metas confiável     | Preparação para futuras integrações (ex: lembretes por calendário) |
+| US008     | Adição de transações robusta | Base para integração com extratos bancários (futuro) |
+| US009     | 	Edição/Exclusão de transações segura            | Garantia de integridade dos dados via API |
+| US010     | Login simplificado e seguro         | Aumento da taxa de conversão e confiança do usuário |
+| Impacto Geral     | Experiência de usuário fluida e segura        | Maior potencial de crescimento e parcerias estratégicas |
 
 ---
 
@@ -393,80 +359,53 @@ Entrega de funcionalidades visuais e operacionais essenciais:
 - Dashboard funcional
 - Registro de transações com anexo
 - Filtros temporais aplicados
+- API funcional e implementados
 
 ---
 
 [Relatório do Projeto com a 4° Interação](Relatorio.md)
 
 ---
-# ✅ 5ª Iteração: Dashboard e Gestão de Transações
+# ✅ 5ª Iteração: Testes Unitarios
 
 ## User Stories
 
-### US005 – Dashboard Financeiro
-**Como** usuário, **quero** ver um resumo gráfico das minhas finanças **para** entender meu saldo mensal.  
+### US011 – Testes Unitarios
+**Como** desenvolvedor, **quero** ver o funcionamento do meu projeto **por** meio de testes unitarios, desde cadastro até transações.  
 **Critérios de Aceite:**
-- Saldo atual com base em receitas e despesas
-- Gráficos em pizza e barra
-- Filtros por dia/mês/ano
-
-📸 ![Dashboard](/prototipos/dashboard.jpg)
+- Testes unitarios para todos os pontos principais do projeto (cadastro,login, dashboard,metas)
 
 ---
 
-### US006 – Metas Financeiras
-**Como** usuário, **quero** visualizar minhas metas no dashboard **para** acompanhar meu progresso.  
+### US012 – Pagina de Administrador
+**Como** administrador, **quero** visualizar dados importantes do projeto e **para** acompanhar o progresso, como logs, etc.  
 **Critérios de Aceite:**
-- Exibição de metas
-- Progresso em percentual
+- Visualização de dados importantes de funcionamento
+- Visualização de Usuarios ativos e movimentações
 
----
+📸 ![Administrador](/prototipos/Painel_Administrativo1.png)
 
-### US007 – Sugestões de Investimento
-**Como** usuário, **quero** sugestões baseadas no meu perfil **para** investir melhor.  
-**Critérios de Aceite:**
-- Sugestões alinhadas ao perfil
-- Filtros por tipo de investimento
+📸 ![Administrador](/prototipos/Painel_Administrativo2.jpg)
 
----
-
-### US008 – Adicionar Transação
-**Como** usuário, **quero** registrar despesas e receitas com categoria e valor.  
-**Critérios de Aceite:**
-- Campos obrigatórios: valor, data, categoria, descrição
-- Valor maior que zero
-
----
-
-### US009 – Editar/Excluir Transação
-**Como** usuário, **quero** corrigir ou remover transações.  
-**Critérios de Aceite:**
-- Edição de qualquer campo
-- Confirmação antes da exclusão
-
+📸 ![Administrador](/prototipos/Painel_Administrativo3.png)
 ---
 
 ## Requisitos Funcionais (RF)
 
-### Gestão de Transações
+- **RF016:** Desenvolvimento de testes unitários abrangentes para as principais funcionalidades (autenticação, gestão de transações, cálculo de saldos e metas).
 
-- **RF005:** Cadastro de transações com valor, data, categoria, descrição e comprovante
-- **RF006:** Edição e exclusão de transações
+- **RF017:** Implementação de um painel administrativo com visualização de métricas importantes (número de usuários ativos, total de transações, logs de erro, etc.).
 
-### Dashboard e Visualização
-
-- **RF007:** Exibição de saldo, gráficos e metas
-- **RF008:** Filtros por período
-
+- **RF018:** Geração de logs de sistema para rastreamento de eventos e depuração de erros.
 ---
 
 ## ✅ Valor Entregue - 5ª Iteração
 
-### Resumo:
-Entrega de funcionalidades visuais e operacionais essenciais:  
-✅ Dashboard gráfico e filtros  
-✅ Gestão de receitas e despesas  
-✅ Projeções de metas e investimentos
+Entrega de um sistema confiável, testado e com capacidade de monitoramento, garantindo a qualidade e o suporte pós-lançamento.
+
+✅ Sistema mais estável e com menos bugs.
+✅ Visibilidade sobre o uso e a performance.
+✅ Facilidade na identificação e resolução de problemas.
 
 ---
 
@@ -474,11 +413,10 @@ Entrega de funcionalidades visuais e operacionais essenciais:
 
 | User Story | Valor para o Usuário | Valor para o Negócio |
 |-----------|----------------------|-----------------------|
-| US005     | Visualização clara do saldo | Engajamento com uso contínuo |
-| US006     | Acompanhamento de metas     | Retenção por metas alcançadas |
-| US007     | Dicas personalizadas        | Upselling ou parcerias futuras |
-| US008     | Registro completo de finanças | Dados detalhados para análises |
-| US009     | Correção de erros            | Confiabilidade no sistema |
+| US011     | Maior confiança no sistema | Redução de bugs em produção e custos de manutenção |
+| US012     | Sistema mais estável e robusto     | Insights para tomadas de decisão e planejamento de recursos |
+| Impacto Geral     | Experiência livre de falhas        | Maior credibilidade e sustentabilidade do produto |
+
 
 
 ---
