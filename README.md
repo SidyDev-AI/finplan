@@ -206,6 +206,7 @@ Entrega de funcionalidades visuais e operacionais essenciais:
 
 [Relatório do Projeto com a 2° Interação](Relatorio.md)
 
+
 ---
 
 # ✅ 3ª Iteração: MVC
@@ -388,9 +389,162 @@ Entrega de um sistema mais integrado, seguro e preparado para expansão, facilit
 📸 ![Administrador](/prototipos/Painel_Administrativo2.jpg)
 
 📸 ![Administrador](/prototipos/Painel_Administrativo3.png)
+
+--- 
+
+# ✅ 3ª Iteração: Orçamento, Relatórios e Integrações
+
+## User Stories
+
+### US010 – Definição de Orçamentos
+**Como** usuário, **quero** definir orçamentos mensais por categoria **para** controlar meus gastos.  
+**Critérios de Aceite:**
+- Permitir definir limite por categoria
+- Alertas ao atingir 80%, 90% e 100% do limite
+
+📸 ![Orçamentos](/prototipos/orcamentos.jpg)
+
+---
+
+### US011 – Categorias Personalizadas
+**Como** usuário, **quero** criar categorias personalizadas **para** organizar melhor minhas finanças.  
+**Critérios de Aceite:**
+- Adicionar/editar/excluir categorias
+- Associar transações a múltiplas categorias
+
+---
+
+### US012 – Relatórios Exportáveis
+**Como** usuário, **quero** gerar relatórios PDF/Excel **para** análise fiscal.  
+**Critérios de Aceite:**
+- Exportar dados por período personalizado
+- Formatar relatórios com logo da plataforma
+
+📸 ![Relatórios](/prototipos/relatorios.jpg)
+
+---
+
+### US014 – Integração Bancária
+**Como** usuário, **quero** sincronizar minha conta bancária **para** importar transações automaticamente.  
+**Critérios de Aceite:**
+- Conexão via API com bancos autorizados
+- Sincronização diária automática
+
+---
+
+### US018 – Gerenciar Assinaturas
+**Como** usuário, **quero** cadastrar assinaturas recorrentes **para** evitar gastos não planejados.  
+**Critérios de Aceite:**
+- Lembretes 3 dias antes do vencimento
+- Visualização consolidada de gastos
+
 ---
 
 ## Requisitos Funcionais (RF)
+
+### Gestão de Orçamentos
+- **RF009:** Definição de limites orçamentários por categoria
+- **RF010:** Alertas progressivos de consumo (80%, 90%, 100%)
+
+### Relatórios Avançados
+- **RF013:** Geração de relatórios PDF/Excel com filtros temporais
+- **RF015:** Filtros multicritério (categoria, tags, valor)
+
+### Integrações
+- **RF017:** Conexão com APIs bancárias (Santander, Itaú, Bradesco)
+- **RF018:** Sincronização automática de transações
+
+---
+
+## ✅ Valor Entregue - 3ª Iteração
+
+### Resumo:
+Entrega de mecanismos avançados de controle e análise:  
+✅ Planejamento orçamentário  
+✅ Relatórios fiscais exportáveis  
+✅ Integração com bancos nacionais  
+✅ Gestão de assinaturas recorrentes
+
+---
+
+### Detalhamento de Valor
+
+| User Story | Valor para o Usuário          | Valor para o Negócio           |
+|------------|-------------------------------|---------------------------------|
+| US010      | Controle preciso de gastos    | Dados para sugestões proativas |
+| US012      | Compatibilidade com declarações fiscais | Atração de usuários corporativos |
+| US014      | Atualização automática de dados | Redução de entrada manual     |
+| US018      | Prevenção de gastos ocultos   | Aumento de valor percebido     |
+
+---
+
+## 📊 Protótipos Validados
+- Dashboard de orçamentos com alertas visuais
+- Módulo de relatórios com pré-visualização
+- Wizard de conexão com bancos
+
+---
+
+## 🚀 Impacto
+**Para o usuário:** Controle financeiro profissionalizado  
+**Para o negócio:** Diferencial competitivo em integrações  
+**Para a equipe:** Arquitetura preparada para escalar  
+
+---
+
+[Relatório do Projeto com a 3° Interação](Relatorio.md)
+
+---
+
+# ✅ 4ª Iteração: Notificações, Investimentos e Multiusuário
+
+## User Stories
+
+### US015 – Alertas de Saldo
+**Como** usuário, **quero** receber alertas de saldo baixo **para** evitar descoberto.  
+**Critérios de Aceite:**
+- Configurar limite mínimo personalizado
+- Notificações via e-mail/app
+
+📸 ![Alertas](/prototipos/alertas.jpg)
+
+---
+
+### US016 – Gestão de Usuários (Admin)
+**Como** admin, **quero** gerenciar contas de usuários **para** manter segurança do sistema.  
+**Critérios de Aceite:**
+- Ativar/desativar contas
+- Visualizar logs de atividades
+
+---
+
+### US019 – Personalização Visual
+**Como** usuário, **quero** escolher tema claro/escuro **para** melhor experiência.  
+**Critérios de Aceite:**
+- Alternância imediata entre temas
+- Preferência salva automaticamente
+
+---
+
+### US020 – Controle de Investimentos
+**Como** usuário, **quero** registrar meus investimentos **para** acompanhar rentabilidade.  
+**Critérios de Aceite:**
+- Cadastro de tipo, valor e data
+- Gráfico de evolução histórica
+
+---
+
+### US021 – Conta Compartilhada
+**Como** usuário, **quero** compartilhar acesso com familiares **para** gestão conjunta.  
+**Critérios de Aceite:**
+- Convite por e-mail
+- Níveis de permissão diferenciados
+
+
+---
+
+## Requisitos Funcionais (RF)
+
 
 - **RF016:** Desenvolvimento de testes unitários abrangentes para as principais funcionalidades (autenticação, gestão de transações, cálculo de saldos e metas).
 
@@ -407,9 +561,33 @@ Entrega de um sistema confiável, testado e com capacidade de monitoramento, gar
 ✅ Visibilidade sobre o uso e a performance.
 ✅ Facilidade na identificação e resolução de problemas.
 
+### Notificações
+- **RF016:** Sistema de alertas configurável para saldo e vencimentos
+
+### Administração
+- **RF019:** Painel de gestão de usuários e logs
+- **RF021:** Controle granular de permissões
+
+### Investimentos
+- **RF024:** Registro detalhado de ativos financeiros
+- **RF025:** Cálculo automático de rentabilidade
+
+---
+
+## ✅ Valor Entregue - 4ª Iteração
+
+### Resumo:
+Entrega de funcionalidades avançadas de colaboração e análise:  
+✅ Sistema de alertas inteligentes  
+✅ Gestão corporativa de usuários  
+✅ Acompanhamento de investimentos  
+✅ Contas compartilhadas com segurança
+
+
 ---
 
 ### Detalhamento de Valor
+
 
 | User Story | Valor para o Usuário | Valor para o Negócio |
 |-----------|----------------------|-----------------------|
@@ -432,3 +610,35 @@ Entrega de um sistema confiável, testado e com capacidade de monitoramento, gar
 [Relatório do Projeto com a 5° Interação](Relatorio.md)
 
 ---
+
+| User Story | Valor para o Usuário          | Valor para o Negócio           |
+|------------|-------------------------------|---------------------------------|
+| US015      | Prevenção de problemas bancários | Redução de chargebacks        |
+| US020      | Visão completa do patrimônio  | Base para consultoria premium  |
+| US021      | Gestão familiar de finanças   | Aumento de contas familiares  |
+| US019      | Experiência personalizada     | Maior satisfação do usuário    |
+
+---
+
+## 🛡️ Requisitos Não Funcionais (RNF)
+
+### Segurança
+- **RNF004:** Implementação de 2FA para acesso compartilhado
+- **RNF003:** Auditoria trimestral de segurança de dados
+
+### Performance
+- **RNF006:** Suporte a 50k transações simultâneas
+
+### Usabilidade
+- **RNF008:** Contrastes adequados para daltonismo nos temas
+
+---
+
+## 📈 Protótipos Validados
+- Painel de investimentos com simulação de cenários
+- Interface de convite para conta compartilhada
+- Seletor de temas com pré-visualização
+
+---
+
+[Relatório do Projeto com a 4° Interação](Relatorio.md)
